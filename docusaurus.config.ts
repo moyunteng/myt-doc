@@ -129,7 +129,7 @@ const config: Config = {
         },
         */
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} 武汉魔云腾科技有限公司, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} 武汉魔云腾科技有限公司 <a href="https://beian.miit.gov.cn/">鄂ICP备2023003158号-1</a>`,
     },
     prism: {
       theme: prismThemes.github,
