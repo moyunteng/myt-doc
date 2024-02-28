@@ -65,10 +65,16 @@ const config: Config = {
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          type: 'doc',
           position: 'left',
+          docId: 'client',
           label: '文档',
+        },
+        {
+          type: 'docSidebar',
+          position: 'left',
+          sidebarId: 'tutorial',
+          label: '安卓教程',
         },
         // {to: '/blog', label: 'Blog', position: 'left'},
         // {
