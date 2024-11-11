@@ -1,0 +1,1260 @@
+---
+sidebar_position: 2
+---
+
+# ubuntu22.04基本使用
+
+## 一、魔云腾主机介绍
+
+
+
+## 二、编译ubuntu22.04文件系统镜像
+
+#### 2.1 安装依赖软件
+
+```
+#安装依赖软件
+sudo apt-get install git ssh make gcc libssl-dev liblz4-tool  expect g++ patchelf chrpath gawk texinfo chrpath diffstat binfmt-support qemu-user-static live-build bison flex fakeroot cmake gcc-multilib g++-multilib unzip device-tree-compiler ncurses-dev  python-is-python3 python-dev-is-python3 -y 
+```
+
+#### 2.2 解压根文件系统
+
+可在SDK中直接运行`build_ubuntu.sh`脚本 可直接将ubuntu22.04文件系统编译完成，如果需要自行编辑内核模块请参照[2.8安装开发板驱动](#2.8安装开发板驱动)进行内容的修改
+
+
+
+# 按需制定文件系统
+
++++
+
+## 一、对ubuntu文件系统进行编译
+
+### 1 环境准备
+
+#### 1.1 下载ubuntu base
+
+此处使用[北京外国语大学镜像站](https://mirrors.bfsu.edu.cn/ubuntu-cdimage/ubuntu-base/releases)加速下载，注意选择根据开发板架构选择arm64或其他架构。
+
+```
+wget https://mirrors.bfsu.edu.cn/ubuntu-cdimage/ubuntu-base/releases/22.04.2/release/ubuntu-base-22.04.2-base-arm64.tar.gz
+```
+
+#### 1.2 安装依赖软件
+
+```
+#安装依赖软件
+sudo apt-get install git ssh make gcc libssl-dev liblz4-tool  expect g++ patchelf chrpath gawk texinfo chrpath diffstat binfmt-support qemu-user-static live-build bison flex fakeroot cmake gcc-multilib g++-multilib unzip device-tree-compiler ncurses-dev  python-is-python3 python-dev-is-python3 -y 
+```
+
+#### 1.3 解压根文件系统
+
+```
+# 创建一个文件夹存放根文件系统
+mkdir ubuntu_rootfs
+# 解压到文件夹
+sudo tar -xvf ubuntu-base-22.04-base-arm64.tar.gz -C ubuntu_rootfs/
+```
+
+#### 1.4 配置根文件系统
+
+1.配置根文件系统的网络、软件源等
+
+```
+# 配置网络，复制本机 resolv.conf 文件
+sudo cp /etc/resolv.conf <SDK>/ubuntu_rootfs/etc/resolv.conf
+sudo echo "nameserver 8.8.8.8" >> <SDK>/ubuntu_rootfs/etc/resolv.conf
+sudo echo "nameserver 114.114.114.114" >> <SDK>/ubuntu_rootfs/etc/resolv.conf
+```
+
+2.更换软件源，此处选择北京外国语大学镜像站
+
+```
+# 编辑根文件系统中的软件源配置文件
+sudo vim <SDK>/ubuntu_rootfs/etc/apt/sources.list
+```
+
+以下是Ubuntu 22.04 版本的镜像，请注意删除根文件系统 `<SDK>/ubuntu_rootfs/etc/apt/sources.list` 文件中原有的内容。
+
+```
+# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
+deb http://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy main restricted universe multiverse
+# deb-src http://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy main restricted universe multiverse
+deb http://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-updates main restricted universe multiverse
+# deb-src http://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-updates main restricted universe multiverse
+deb http://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-backports main restricted universe multiverse
+# deb-src http://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-backports main restricted universe multiverse
+
+# deb http://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-security main restricted universe multiverse
+# # deb-src http://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-security main restricted universe multiverse
+
+deb http://ports.ubuntu.com/ubuntu-ports/ jammy-security main restricted universe multiverse
+# deb-src http://ports.ubuntu.com/ubuntu-ports/ jammy-security main restricted universe multiverse
+
+# 预发布软件源，不建议启用
+# deb http://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-proposed main restricted universe multiverse
+# # deb-src http://mirrors.bfsu.edu.cn/ubuntu-ports/ jammy-proposed main restricted universe multiverse
+```
+
+3.配置仿真开发板运行环境
+
+X86 架构下的Ubuntu 系统默认不支持Arm架构，可以通过安装 `qemu-user-static` 实现仿真运行，从而构建 ubuntu 文件系统。
+
+```
+# 拷贝 qemu-aarch64-static 到 ubuntu_rootfs/usr/bin/ 目录下。
+sudo cp /usr/bin/qemu-aarch64-static <SDK>/ubuntu_rootfs/usr/bin/
+```
+
+#### 1.5 挂载根文件系统
+
+首先编写挂载脚本 mount.sh，用于挂载根文件系统运行所需要的设备和目录。
+
+```
+#!/bin/bash
+mnt() {
+	echo "MOUNTING"
+	sudo mount -t proc /proc ${2}proc
+	sudo mount -t sysfs /sys ${2}sys
+	sudo mount -o bind /dev ${2}dev
+	sudo mount -o bind /dev/pts ${2}dev/pts
+	# sudo chroot ${2}
+}
+umnt() {
+	echo "UNMOUNTING"
+	sudo umount ${2}proc
+	sudo umount ${2}sys
+	sudo umount ${2}dev/pts
+	sudo umount ${2}dev
+}
+ 
+if [ "$1" == "-m" ] && [ -n "$2" ] ;
+then
+	mnt $1 $2
+elif [ "$1" == "-u" ] && [ -n "$2" ];
+then
+	umnt $1 $2
+else
+	echo ""
+	echo "Either 1'st, 2'nd or both parameters were missing"
+	echo ""
+	echo "1'st parameter can be one of these: -m(mount) OR -u(umount)"
+	echo "2'nd parameter is the full path of rootfs directory(with trailing '/')"
+	echo ""
+	echo "For example: ch-mount -m /media/sdcard/"
+	echo ""
+	echo 1st parameter : ${1}
+	echo 2nd parameter : ${2}
+fi
+```
+
+保存退出后给脚本增加执行权限，并挂载
+
+```
+# 增加脚本执行权限
+sudo chmod +x mount.sh
+# 挂载文件系统
+./mount.sh -m ubuntu_rootfs/
+# 进入根文件系统
+sudo chroot ubuntu_rootfs/
+```
+
+==在后续完成根文件系统构建，并退出后，必须卸载文件系统，否则后续在构造镜像时会报错！！！==
+
+```
+# 卸载文件系统
+./mount.sh -u ubuntu_rootfs/
+```
+
+
+
+### 2 构建根文件系统
+
++++
+
+#### 2.1 为根文件系统安装必要软件
+
+此处请确保你构建根文件系统的环境有网络连接
+
+```
+# 更新软件
+apt update
+apt upgrade -y
+mv /var/lib/dpkg/info/ /var/lib/dpkg/info_old/
+mkdir /var/lib/dpkg/info
+apt-get update
+apt-get install
+# 必要工具
+apt install vim bash-completion net-tools iputils-ping ifupdown ethtool ssh rsync udev htop rsyslog curl openssh-server apt-utils dialog nfs-common psmisc language-pack-en-base sudo kmod apt-transport-https gcc g++ make cmake fdisk -y
+```
+
+以下内容可选择安装
+
+```
+# 开发工具
+apt install ninja-build build-essential ffmpeg libopencv-dev libv4l-dev v4l-utils yavta  -y
+```
+
+#### 2.2 修改root用户密码，添加新用户
+
+```
+# 修改 root 密码
+passwd root
+# 添加新用户并设置密码
+adduser myt
+```
+
+修改/etc/sudoers文件，用于控制哪些用户可以以超级管理员身份使用root权限进行命令
+
+```
+# 编辑 /etc/sudoers 
+vim /etc/sudoers
+```
+
+添加以下内容
+
+```
+myt      ALL=(ALL:ALL) ALL
+```
+
+#### 2.3 设置主机名和主机解析
+
+```
+# 主机名
+echo "RK3588" > /etc/hostname
+# 主机 IP
+echo "127.0.0.1 localhost" >> /etc/hosts
+echo "127.0.0.1 RK3588" >> /etc/hosts
+echo "127.0.0.1 localhost RK3588" >> /etc/hosts
+```
+
+#### 2.4 配置网卡
+
+```
+#下载network-manager
+apt-get install network-manager
+```
+
+在安装 network-manager时需要选择时区，请根据需要自动选择
+
+![企业微信截图_17307932086628](C:\Users\27907\AppData\Local\Temp\企业微信截图_17307932086628.png)
+
+Network-Manager 服务会自动配置网卡,但是其默认配置文件将 Ethernet 加入了黑名单，会导致 Ubuntu 提示 unmanned。
+
+```
+# 编辑文件
+vim /usr/lib/NetworkManager/conf.d/10-globally-managed-devices.conf
+# 文件内容修改为
+[keyfile]
+unmanaged-devices=*,except:type:ethernet,except:type:wifi,except:type:gsm,except:type:cdma
+```
+
+RK3588开发板有两块网卡，因此将两块网卡默认配置为自动DHCP获取。
+
+```
+# 网卡0
+echo "auto eth0" > /etc/network/interfaces.d/eth0
+echo "iface eth0 inet dhcp" >> /etc/network/interfaces.d/eth0
+# 网卡1
+echo "auto eth1" > /etc/network/interfaces.d/eth1
+echo "iface eth1 inet dhcp" >> /etc/network/interfaces.d/eth1
+```
+
+在实际测试中网口必须接入网线系统才能正常启动，就是在不联网的情况下，每次开机都要等待很久，卡在网络连接上5分钟。
+
+```
+修改下面这个文件
+vim /lib/systemd/system/networking.service
+```
+
+将里面的TimeoutStartSec=5min 修改为：
+
+```
+TimeoutStartSec=5sec
+```
+
+#### 2.5 禁用系统休眠
+
+```
+# 设置禁止休眠
+systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+# 查看休眠状态
+systemctl status sleep.target
+```
+
+#### 2.6 修改ssh配置文件
+
+1.配置`ssh_config`
+
+```
+$ sudo vim /etc/ssh/ssh_config				
+# 去掉PasswordAuthentication yes前面的"#"号
+```
+
+![image-20241031115511303](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241031115511303.png)
+
+2.配置sshd_config
+
+```
+$ sudo vim /etc/ssh/sshd_config	
+			
+# 在PermitRootLogin prohibit-password这行行首加上"#"
+# 在此行下面添加新一行
+PermitRootLogin yes
+```
+
+![image-20241031115739313](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241031115739313.png)
+
+#### 2.7设置开机自动扩容根目录
+
+在`/usr/local/bin`目录下创建`autoexpand.sh`脚本
+
+```
+vim autoexpand.sh
+```
+
+脚本内容如下
+
+```
+#!/bin/bash
+
+ROOT_PARTITION=$(lsblk | grep "/$" | awk '{print $1}'| sed 's/^..//')
+DEVICE=${ROOT_PARTITION%p*}
+ROOT_DIR=/dev/${ROOT_PARTITION}
+NUM="${ROOT_PARTITION: -1}"
+
+echo -e "\n" | parted /dev/${DEVICE} resizepart ${NUM}
+echo -e "\n" | resize2fs ${ROOT_DIR}
+
+echo '扩容根目录已完成'
+```
+
+给予脚本可执行权限
+
+```
+sudo chmod +x autoexpand.sh
+```
+
+创建systemd服务
+
+在`/ect/systemd/system/`下创建`autoexpand.service`
+
+内容如下
+
+```
+[Unit]
+Description=Run My Script Once at Boot
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c 'if [ ! -f /tmp/auto_expand_done ]; then /usr/local/bin/autoexpand.sh; touch /tmp/auto_expand_done; fi'
+
+[Install]
+WantedBy=multi-user.target
+```
+
+启用此服务
+
+```
+sudo systemctl enable autoexpand.service
+```
+
+在烧录后，根目录将自动扩容到最大
+
+#### 2.8安装开发板驱动
+
+在SDK目录下运行`./build.sh menuconfig  `
+
+打开`Kernel(Kernel (Embedded in an Android-style boot image)`
+
+在`defconfig fragments` 中添加`rockchip_linux_docker.config`
+
+![image-20241031103309507](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241031103309507.png)
+
+将自己所需的驱动或内核模块在kernel中修改`<SDK>/kernel/arch/arm64/configs`目录下的
+
+`rockchip_linux_deconfig`或者`rockchip_linux_docker.config`
+
+修改完成后编译kernel来获取驱动模块
+
+```
+# 在SDK根目录下执行命令，生成驱动文件
+./build.sh kernel
+```
+
+所编译的模块在`<SDK>/output/kernel-modules/lib`目录下将此`modlues`目录复制到`<SDK>/ubuntu_roofs/lib`下
+
+```
+cp -r <SDK>/output/kernel-modules/lib/modlues <SDK>/ubuntu_roofs/lib
+```
+
+
+
+### 3 打包根文件系统镜像
+
+#### 3.1打包镜像
+
+使用SDK目录下`mk-image.sh`脚本打包
+
+```
+# 打包
+sudo ./mk-image.sh
+```
+
+`mk-image.sh`脚本内容如下
+
+```
+#!/bin/bash -e # 使用bash解释器，并开启错误检查模式
+
+TARGET_ROOTFS_DIR=./ubuntu_rootfs # 定义目标根文件系统目录路径
+ROOTFSIMAGE=ubuntu-rootfs.img # 定义根文件系统镜像文件名
+EXTRA_SIZE_MB=300 # 定义额外的磁盘空间大小
+IMAGE_SIZE_MB=$(( $(sudo du -sh -m ${TARGET_ROOTFS_DIR} | cut -f1) + ${EXTRA_SIZE_MB} )) # 计算根文件系统镜像文件大小
+
+echo Making rootfs! # 输出提示信息
+
+if [ -e ${ROOTFSIMAGE} ]; then # 如果根文件系统镜像文件已经存在，则删除
+rm ${ROOTFSIMAGE}
+fi
+
+dd if=/dev/zero of=${ROOTFSIMAGE} bs=1M count=0 seek=${IMAGE_SIZE_MB} # 创建指定大小的空白镜像文件
+
+sudo mkfs.ext4 -d ${TARGET_ROOTFS_DIR} ${ROOTFSIMAGE} # 在指定目录下创建ext4文件系统，并将其写入到镜像文件中
+
+echo Rootfs Image: ${ROOTFSIMAGE} # 输出根文件系统镜像文件名
+```
+
+
+
+#### 3.2 烧录镜像
+
+
+
+打包镜像完成后，会生成 `ubuntu-rootfs.img` 文件，使用该文件烧录进开发板即可。
+
+按需修改parameter文件，来修改rootfs的地址和大小（此处修改rootfs的大小不可小于 `ubuntu-rootfs.img` 文件大小）
+
+```
+FIRMWARE_VER: 1.0
+MACHINE_MODEL: RK3588
+MACHINE_ID: 007
+MANUFACTURER: RK3588
+MAGIC: 0x5041524B
+ATAG: 0x00200800
+MACHINE: 0xffffffff
+CHECK_MASK: 0x80
+PWR_HLD: 0,0,A,0,1
+TYPE: GPT
+GROW_ALIGN: 0
+CMDLINE:mtdparts=:0x00002000@0x00004000(uboot),0x00002000@0x00006000(misc),0x00020000@0x00008000(boot),0x00040000@0x00028000(recovery),0x00b00000@0x00078000(rootfs),0x00040000@0x00b78000(oem),-@0x00e80000(userdata:grow)
+uuid:rootfs=614e0000-0000-4b53-8000-1d28000054a9
+uuid:rootfs=614e0000-0000-4b53-8000-1d28000054a9
+uuid:boot=7A3F0000-0000-446A-8000-702F00006273
+```
+
+
+
+## 二、运行rkllm大模型
+
++++
+
+### 1 使用SSH链接进魔云腾主机
+
+接入usb接口，使用串口查看主机内容，使用刚才设置的用户名，以及密码登录ubuntu。
+
+查看魔云腾主机ip
+
+```
+ifconfig
+```
+
+![image-20241031122047091](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241031122047091.png)
+
+```
+ ssh <username>@<ip>                                    #username为用户名，ip为刚才查看的ip
+```
+
+输入密码后可直接链接进入
+
+
+
+### 2 安装docker
+
+检查卸载老版本Docker
+
+```
+sudo apt-get remove docker docker-engine docker.io containerd runc
+```
+
+更新软件包
+
+```
+sudo apt-get update
+sudo apt-get upgrade -y
+```
+
+安装docker依赖
+
+```
+sudo apt-get install ca-certificates curl gnupg lsb-release -y
+```
+
+添加docker密钥
+
+```
+curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+```
+
+添加阿里云docker软件源
+
+```
+sudo apt install software-properties-common -y
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt-get update
+```
+
+安装docker
+
+```
+apt-get install docker-ce docker-ce-cli containerd.i -y
+```
+
+ubuntu 22.04默认使用nftables作为防火墙，而非iptables。此处需要将nfttables改为iptables
+
+```
+sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
+```
+
+使用清华大学的docker镜像源
+
+打开 Docker 的配置文件 `/etc/docker/daemon.json`（如果文件不存在则需要创建），添加以下内容：
+
+```
+{
+  "registry-mirrors": ["https://docker.mirrors.tuna.tsinghua.edu.cn"]
+}
+```
+
+#### 
+
+### 3 切换到su权限下
+
+```
+su
+```
+
+输入密码，切换到su权限下（ubuntu系统下输入密码时并无任何提示，输入密码后直接回车即可）
+
+### 4 拉取docker镜像运行rkllm大模型
+
+运行以下命令
+
+```
+docker run -itd --pull=always -v /dev/mali0:/dev/mali0 \
+--device /dev/dri -p 8080:8080 --cap-add=CAP_SYS_ADMIN \
+--device /dev/mali0 --name rkllm \
+registry.cn-hangzhou.aliyuncs.com/mytrkllm/mytllm:v2-20240614 \
+/root/run.sh
+```
+
+==请确保`g610`版本兼容，且确保`/usr/lib/firmware`目录下有`mali_csffw.bin`固件==，否则运行时会出现固件报错
+
+### 5 打开主机IP+：8080端口，访问demo控制台
+
+如下图：
+
+![image-20241031162051646](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241031162051646.png)
+
+
+
+## 三、运行rknn demo
+
++++
+
+（此处需要两个不同架构的Linux环境`x86_64`和`aarch64`（魔云腾主机架构），请仔细看此文档内容）
+
+### 1 准备开发环境
+
+下载 `RKNN` 相关仓库  
+
+安装`RKNN-Toolkit2` 环境  
+
+安装编译工具  
+
+检查 `RKNPU2` 环境 
+
+#### 1.1 下载RKNN相关仓库
+
+建议新建一个目录用来存放 RKNN 仓库，例如新建一个名称为` Projects` 的文件夹，并将 ` RKNN-Toolkit2` 和`RKNN Model Zo` 仓库存放至该目录下，参考命令如下： 
+
+```
+# 新建 Projects 文件夹  
+mkdir Projects 
+ 
+# 进入该目录 
+cd Projects 
+ 
+# 下载 RKNN-Toolkit2 仓库 
+git clone https://github.com/airockchip/rknn-toolkit2.git --depth 1 
+# 下载 RKNN Model Zoo 仓库 
+git clone https://github.com/airockchip/rknn_model_zoo.git --depth 1 
+# 注意： 
+# 1.参数 --depth 1 表示只克隆最近一次 commit  
+# 2.如果遇到 git clone 失败的情况，也可以直接在 github 中下载压缩包到本地，然后解压至该目录 
+```
+
+整体目录结构如下： 
+
+```
+Projects 
+├── rknn-toolkit2 
+│   ├── doc 
+│   ├── rknn-toolkit2 
+│   │   ├── packages 
+│   │   ├── docker 
+│   │   └── ... 
+│   ├── rknpu2 
+│   │   ├── runtime 
+│   │   └── ... 
+│   └── ... 
+└── rknn_model_zoo 
+    ├── datasets 
+    ├── examples 
+    └── ... 
+```
+
+#### 1.2 安装 RKNN-Toolkit2 环境
+
+##### 1.2.1 安装 Python 
+
+如果系统中没有安装 Python 3.8（建议版本），或者同时有多个版本的 Python 环境，建议 使用 Conda 创建新的 Python 3.8 环境。
+
+###### 1.2.1.1 安装 Conda 
+
+在终端窗口中执行以下命令，检查是否安装 Conda，若已安装则可省略此节步骤。
+
+```
+conda -V 
+# 参考输出信息：conda 23.9.0 ，表示 conda 版本为 23.9.0 
+# 如果提示 conda: command not found，则表示未安装 conda
+```
+
+如果没有安装 Conda，可以通过下面的链接下载 Conda 安装包：
+
+```
+wget -c https://mirrors.bfsu.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh 
+```
+
+然后通过以下命令安装 Conda：
+
+```
+chmod 777 Miniconda3-latest-Linux-x86_64.sh 
+bash Miniconda3-latest-Linux-x86_64.sh
+```
+
+###### 1.2.1.2 使用 Conda 创建 Python 环境 
+
+在终端窗口中，执行以下命令进入 Conda base 环境：
+
+```
+source ~/miniconda3/bin/activate # miniconda3 安装的目录 
+# 成功后，命令行提示符会变成以下形式：  
+# (base) xxx@xxx:~$
+```
+
+通过以下命令创建名称为 toolkit2 的 Python 3.8 环境：
+
+```
+conda create -n toolkit2 python=3.8
+```
+
+激活 toolkit2 环境，后续将在此环境中安装 `RKNN-Toolkit2`：
+
+```
+conda activate toolkit2 
+# 成功后，命令行提示符会变成以下形式： 
+# (toolkit2) xxx@xxx:~$ 
+```
+
+##### 1.2.2 安装依赖库和 RKNN-Toolkit2 
+
+激活 conda toolkit2 环境后，进入` rknn-toolkit2` 目录，根据 requirements_cpxx.txt 安装依赖 库，并通过 wheel 包安装` RKNN-Toolkit2`，参考命令如下： 
+
+```
+#请在x86_64架构下安装此安装包
+# 进入 rknn-toolkit2 目录 
+cd Projects/rknn-toolkit2/rknn-toolkit2 
+ 
+# 请根据不同的 python 版本，选择不同的 requirements 文件 
+# 例如 python3.8 对应 requirements_cp38.txt  
+pip install -r doc/requirements_cpxx.txt 
+ 
+# 安装 RKNN-Toolkit2 
+# 请根据不同的 python 版本及处理器架构，选择不同的 wheel 安装包文件： 
+# 其中 x.x.x 是 RKNN-Toolkit2 版本号，xxxxxxxx 是提交号，cpxx 是 python 版本号，请根据实际数值进行替换 
+pip install packages/rknn_toolkit2-x.x.x+xxxxxxxx-cpxx-cpxx-linux_x86_64.whl
+
+#并在aaech64架构下安装此安装包
+# 进入 rknn-toolkit_lite2 目录 
+cd Projects/rknn-toolkit2/rknn-toolkit_lite2 
+ 
+# 请根据不同的 python 版本，选择不同的 requirements 文件 
+# 例如 python3.8 对应 requirements_cp38.txt  
+pip install -r doc/requirements_cpxx.txt 
+ 
+# 安装 RKNN-Toolkit_lite2 
+# 请根据不同的 python 版本及处理器架构，选择不同的 wheel 安装包文件： 
+# 其中 x.x.x 是 RKNN-Toolkit2 版本号，xxxxxxxx 是提交号，cpxx 是 python 版本号，请根据实际数值进行替换
+pip install packages/rknn_toolkit_lite2-x.x.x+xxxxxxxx-cpxx-cpxx-linux_aarch64.whl
+```
+
+##### 1.2.3 验证是否安装成功
+
+`x86_64`架构下执行以下命令，若没有报错，则代表` RKNN-Toolkit2` 环境安装成功。
+
+```
+# 进入 Python 交互模式 
+python 
+ 
+# 导入 RKNN 类  
+from rknn.api import RKNN
+```
+
+`aarch64`架构下执行以下命令，若没有报错，则代表 `RKNN-Toolkit_lite2` 环境安装成功。
+
+```
+# 进入 Python 交互模式 
+python 
+ 
+# 导入 RKNN 类  
+from rknnlite.api import RKNNLite
+```
+
+如果安装失败，请查阅 《Rockchip_RKNPU_User_Guide_RKNN_SDK_V1.6.0_CN.pdf》文档中的第 10.2 章节 “工具安装问题”，其中详细介绍了 `RKNN-Toolkit2` 环境安装失败的解决方法。
+
+#### 1.3安装编译工具
+
+##### 1.3.1 安装 CMake
+
+在终端中，执行以下命令：
+
+```
+# 更新包列表 
+sudo apt update 
+ 
+# 安装 cmake 
+sudo apt install cmake 
+```
+
+##### 1.3.2 安装编译器 
+
+1.GCC 下载地址  
+
+ 板端为 64 位系统：`https://releases.linaro.org/components/toolchain/binaries/6.3 2017.05/aarch64-linux-gnu/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz  `
+
+2.解压软件包
+
+建议将 GCC 软件包解压到 `Projects` 的文件夹中。以板端为 64 位系统的 GCC  软件 包为例，存放位置如下：
+
+```
+Projects 
+├── rknn-toolkit2 
+├── rknn_model_zoo 
+└── gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu # 此路径在后面编译RKNN C Demo时会用到
+```
+
+此时， GCC 编译器的路径是 `Projects/gcc-linaro-6.3.1-2017.05-x86_64_ aarch64-linux-gnu/bin/aarch64-linux-gnu `
+
+#### 1.4 确认 RKNPU2 驱动版本 
+
+可以在板端执行以下命令查询 RKNPU2 驱动版本： 
+
+```
+dmesg | grep -i rknpu
+```
+
+Rockchip 开发板的官方固件均自带 RKNPU2 驱动。若以上命令查询不到 NPU 驱动版本， 则可能使用的是第三方固件，其中可能没有安装NPU驱动。可以在 kernel  config 中将 CONFIG_ROCKCHIP_RKNPU 选项的值改成 y 以集成 NPU 驱动，然后重新编译 内核驱动并烧录。建议 RKNPU2 驱动版本 >= 0.9.2。 
+
+### 2 运行示例程序 
+
+#### 2.1 RKNN Model Zoo 介绍 
+
+RKNN Model Zoo 提供了示例代码，旨在帮助用户快速在 Rockchip 的开发板上运行各种常 用模型，整个工程的目录结构如下：
+
+```
+rknn_model_zoo 
+├── 3rdparty # 第三方库 
+├── datasets # 数据集 
+├── examples # 示例代码 
+├── utils # 常用方法，如文件操作，画图等 
+├── build-android.sh # 用于目标为 Android 系统开发板的编译脚本 
+├── build-linux.sh # 用于目标为Linux 系统开发板的编译脚本 
+└── ... 
+```
+
+其中，examples 目录包括了一些常用模型的示例，例如 MobileNet 和 YOLO 等。每个模 型示例提供了 Python 和 C/C++ 两个版本的示例代码（为了方便描述，后续用 RKNN Python  Demo 和 RKNN C Demo 来表示）。以 YOLOv5 模型为例，其目录结构如下：
+
+```
+rknn_model_zoo 
+├── examples 
+│   └── yolov5 
+│       ├── cpp # C/C++ 版本的示例代码 
+│       ├── model # 模型、测试图片等文件 
+│       ├── python # 模型转换脚本和Python版本的示例代码 
+│       └── README.md 
+└── ... 
+```
+
+#### 2.2 RKNN C Demo 使用方法 
+
+下面以 YOLOv5 模型为例，介绍 RKNN C Demo 的使用方法。  注：不同的 RKNN C Demo 用法存在差异，请按照各自目录下 README.md 中的步骤运行。
+
+##### 2.2.1 准备模型
+
+此步骤请在`x86_64`架构下进行
+
+进入` rknn_model_zoo/examples/yolov5/model `目录，运行` download_model.sh` 脚本，该脚本 将下载一个可用的 YOLOv5 ONNX 模型，并存放在当前 model 目录下，参考命令如下：
+
+```
+# 进入 rknn_model_zoo/examples/yolov5/model 目录 
+cd Projects/rknn_model_zoo/examples/yolov5/model 
+ 
+# 运行 download_model.sh 脚本，下载 yolov5 onnx 模型 
+# 例如，下载好的 onnx 模型存放路径为 model/yolov5s_relu.onnx 
+./download_model.sh 
+```
+
+##### 2.2.2 模型转换
+
+进入` rknn_model_zoo/examples/yolov5/python` 目录，运行` convert.py` 脚本，该脚本将原始的ONNX 模型转成 RKNN 模型，参考命令如下：
+
+```
+# 进入 rknn_model_zoo/examples/yolov5/python 目录 
+cd Projects/rknn_model_zoo/examples/yolov5/python 
+ 
+# 运行 convert.py 脚本，将原始的 ONNX 模型转成 RKNN 模型 
+# 用法: python convert.py model_path [rk3566|rk3588|rk3562] [i8/fp] 
+[output_path] 
+python convert.py ../model/yolov5s_relu.onnx rk3588 i8 ../model/yolov5s_relu.rknn 
+```
+
+##### 2.2.3 运行 RKNN C Demo 
+
+###### 2.2.3.1 编译
+
+完整运行一个 RKNN C Demo，需要先将 C/C++ 源代码编译成可执行文件，然后将可执行 文件、模型文件、测试图片等相关文件推送到板端上，最后在板端运行可执行文件。
+
+需要使用 rknn_model_zoo 目录下的  build-linux.sh 脚本进行编译。在运行 build-linux.sh 脚本之前，需要指定编译器的路径  GCC_COMPILER 为本地的GCC 编译器路径。即在 build-linux.sh 脚本中，需要加入以下命令：
+
+```
+# 添加到 build-linux.sh 脚本的开头位置即可 
+GCC_COMPILER=Projects/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu
+```
+
+然后在` rknn_model_zoo` 目录下，运行` build-linux.sh` 脚本，参考命令如下：
+
+```
+# 进入 rknn_model_zoo 目录 
+cd Projects/rknn_model_zoo 
+ 
+# 运行 build-linux.sh 脚本 
+# 用法:./build-linux.sh -t <target> -a <arch> -d <build_demo_name> [-b <build_type>] [-m] 
+# -t : target (rk356x/rk3588) # 平台类型，rk3568/rk3566 都统一为rk356x 
+# -a : arch (aarch64/armhf) # 板端系统架构 
+# -d : demo name # 对应 examples 目录下子文件夹的名称，如yolov5、mobilenet 
+# -b : build_type(Debug/Release) 
+# -m : enable address sanitizer, build_type need set to Debug 
+./build-linux.sh -t rk3588 -a aarch64 -d yolov5
+```
+
+###### 2.2.3.2 推送文件到魔云腾主机 
+
+编译完成后，会在 rknn_model_zoo 目录下产生 install 文件夹， 其中有编译好的可执行文 件，以及测试图片等相关文件。参考目录结构如下：
+
+```
+install 
+├── rk356x_linux_aarch64 # rk356x 平台 
+└── rk3588_android_arm64-v8a # rk3588平台 
+    └── rknn_yolov5_demo  
+        ├── lib # 依赖库 
+        ├── model # 存放模型、测试图片等文件 
+        └── rknn_yolov5_demo # 可执行文件 
+```
+
+###### 2.2.3.3 魔云腾主机运行Demo
+
+此步骤请在魔云腾主机中的`aarch64`架构环境中进行
+
+```
+# 进入 rknn_yolov5_demo 目录 
+cd /data/rknn_yolov5_demo/  
+# 设置依赖库环境 
+export LD_LIBRARY_PATH=./lib 
+# 运行可执行文件 
+# 用法: ./rknn_yolov5_demo <model_path> <input_path> 
+./rknn_yolov5_demo model/yolov5s_relu.rknn model/bus.jpg
+```
+
+###### 2.3.3.4 查看结果
+
+脚本运行成功后输出信息如下，其中，class 字段代表预测的类别，score 为得分，(xmin,  ymin) 是检测框的左上角坐标，(xmax, ymax) 是检测框的右下角坐标。
+
+```
+# class @ （xmin, ymin, xmax, ymax）score 
+person @ (209 244 286 506) 0.884 
+person @ (478 238 559 526) 0.868 
+person @ (110 238 230 534) 0.825 
+bus     @ (94 129 553 468) 0.705 
+person @ (79 354 122 516) 0.339
+```
+
+默认情况下，输出图片保存路径为` rknn_yolov5_demo/out.png`，可以从魔云腾拉取到本地查看。
+
+输出图片如下所示：
+
+![image-20241031173042275](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241031173042275.png)
+
+
+
+
+
+
+
+
+
+## 四、运行rkmpp demo
+
++++
+
+### 1 下载rkmpp
+
+新建rkmpp文件夹
+
+```
+mkdir mpp
+cd mpp
+```
+
+使用git克隆rkmpp
+
+```
+git clone https://github.com/rockchip-linux/mpp.git
+```
+
+### 2 交叉编译MPP库
+
+```
+cd build/linux/aarch64
+vim arm.linux.cross.cmake
+```
+
+查看是否是对应aarch64架构的交叉编译工具，如图所示：
+
+
+
+![image-20241031180429277](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241031180429277.png)
+
+进行编译
+
+```
+./arm.linux.cross.cmake && make
+```
+
+### 3 检查编译结果
+
+编译之后，动态库在mpp目录下
+
+![image-20241031180702120](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241031180702120.png)
+
+测试工具在test目录下
+
+![image-20241031180747495](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241031180747495.png)
+
+### 4 安装库文件
+
+在mpp目录下
+
+```
+sudo make install
+```
+
+### 5 设置打印日志
+
+```
+export mpi_debug=1
+export mpp_debug=1
+export h264d_debug=1
+export mpp_syslog_perror=1
+```
+
+### 6 运行并查看日志
+
+例如运行`mpi_dec_test`
+
+```
+./mpi_dec_test
+```
+
+有以下日志输出：
+
+![image-20241031181644770](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241031181644770.png)
+
+
+
+## 五、安装librga库
+
++++
+
+RGA (Raster Graphic Acceleration Unit)是一个独立的2D硬件加速器，可用于加速点/线绘制，执行图像缩放、旋转、bitBlt、alpha混合等常见的2D图形操作。本仓库代码实现了RGA用户空间驱动，并提供了一系列2D图形操作API。
+
+### 1 下载librga
+
+新建librga文件夹
+
+```
+mkdir librga
+cd librga
+```
+
+使用git克隆rkmpp
+
+```
+git clone https://github.com/airockchip/librga.git
+```
+
+### 2 移动库文件
+
+当前预编译仓库API版本：1.10.1
+
+`libs`目录下存放了预编译的librga库，将他复制到`/usr/lib`目录下
+
+```
+cp libs/Linux/gcc-aaech64/librga.so /usr/lib
+```
+
+### 3 验证librga是否可用
+
+#### 3.1 移动测试文件
+
+`samples/sample_file`目录下存放着示例图片，使用示例图片时，Linux系统须将源图储存在设备/usr/data目录下。
+
+```
+cp ./samples/sample_file/in0w1280-h720-rgba8888.bin in1w1280-h720-rgba8888.bin /usr/data
+```
+
+如显示无此文件夹，可自行创建
+
+```
+cd /usr/
+mkdir data
+```
+
+#### 3.2 运行im2d_api_demo
+
+```
+cd samples
+```
+
+##### 3.2.1 工具链修改
+
+- **Linux（buildroot/debian）**
+
+ 参考librga源码目录下**toolchains/toolchain_linux.cmake**写法，修改工具链路径、名称。
+
+| 工具链选项     | 描述       |
+| -------------- | ---------- |
+| TOOLCHAIN_HOME | 工具链目录 |
+| TOOLCHAIN_NAME | 工具链名称 |
+
+##### 3.2.2 编译脚本修改
+
+ 修改samples目录或需要编译的示例代码目录下**cmake_\*.sh**，指定toolchain路径。
+
+| 编译选项       | 描述                                                         |
+| -------------- | ------------------------------------------------------------ |
+| TOOLCHAIN_PATH | toolchain的绝对路径，即《工具链修改》小节中修改后的toolchain_*.cmake文件的绝对路径 |
+| LIBRGA_PATH    | 需要链接的librga.so的绝对路径，默认为librga cmake编译时的默认打包路径 |
+| BUILD_DIR      | 编译生成文件存放的相对路径                                   |
+
+##### 3.2.3 执行编译脚本
+
+```
+chmod +x ./cmake_linux.sh
+./cmake_android.sh
+```
+
+##### 3.2.4 运行验证
+
+所编译内容将出现在新建的build文件夹中
+
+![image-20241101104713589](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241101104713589.png)
+
+运行rgaImDemo
+
+```
+./rgaImDemo --copy
+```
+
+运行后将打印出librga版本以及其他日志
+
+![image-20241101104859786](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241101104859786.png)
+
+
+
+## 六、运行jellyfin
+
++++
+
+###  在Linux主机上配置
+
+Jellyfin所需的`jellyfin-ffmpeg`deb包附带所有必要的用户模式Rockchip MPP和RGA驱动程序。
+
+除此之外，只需安装 OpenCL 运行时 （libmali） 并配置设备权限
+
+### 1 安装所需安装包
+
+新建`jellyfin`文件夹
+
+```
+mkdir jrllyfin
+cd jrllyfin
+```
+
+下载所需的`jellyfin-server`、`jellyfin-web`和`jellyfin-ffmpeg7`
+
+```
+wget https://repo.jellyfin.org/files/server/ubuntu/latest-stable/arm64/jellyfin-server_10.10.0+ubu2204_arm64.deb
+```
+
+```
+wget https://repo.jellyfin.org/files/server/ubuntu/latest-stable/arm64/jellyfin-web_10.10.0+ubu2204_all.deb
+```
+
+```
+wget https://repo.jellyfin.org/files/ffmpeg/ubuntu/latest-7.x/arm64/jellyfin-ffmpeg7_7.0.2-5-jammy_arm64.deb
+```
+
+如无法下载请自行在官网下载并传到魔云腾主机端
+
+安装
+
+```
+dpkg -i jellyfin-ffmpeg7_7.0.2-5-jammy_arm64.deb
+dpkg -i jellyfin-server_10.10.0+ubu2204_arm64.deb
+dpkg -i jellyfin-web_10.10.0+ubu2204_all.deb
+```
+
+### 2 确保`dma_heap`、`dri`、`mpp_service`和`rga`存在于`/dev`中
+
+```
+ls -l /dev | grep -E "mpp|rga|dri|dma_heap"
+```
+
+![image-20241101111448047](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241101111448047.png)
+
+否则请将BSP内核升级到5.10LTS及更高版本
+
+### 3 设置udev规则文件
+
+将以下行添加到`/etc/udev/rules.d/99-rk-device-permissions.rules`，重新启动以使其生效
+
+```
+KERNEL=="mpp_service", MODE="0660", GROUP="video"
+KERNEL=="rga", MODE="0660", GROUP="video"
+KERNEL=="system", MODE="0666", GROUP="video"
+KERNEL=="system-dma32", MODE="0666", GROUP="video"
+KERNEL=="system-uncached", MODE="0666", GROUP="video"
+KERNEL=="system-uncached-dma32", MODE="0666", GROUP="video" RUN+="/usr/bin/chmod a+rw /dev/dma_heap"
+```
+
+如无此文件，请自行创建
+
+### 4 添加用户
+
+将用户`jellfin`添加到`render`和`video`组，然后重新启动`jellyfin`服务
+
+```
+sudo usermod -aG render jellyfin
+sudo usermod -aG video jellyfin
+sudo systemctl restart jellyfin
+```
+
+### 5 在主机上安装 ARM Mali OpenCL 运行时 （libmali）：
+
+```
+wget https://github.com/tsukumijima/libmali-rockchip/releases/download/v1.9-1-2d267b0/libmali-valhall-g610-g13p0-gbm_1.9-1_arm64.deb
+```
+
+如无法下载请自行在官网下载并传到魔云腾主机端
+
+安装
+
+```
+dpkg -i libmali-valhall-g610-g13p0-gbm_1.9-1_arm64.deb
+```
+
+### 6 检查OpenCL运行时状态
+
+```
+sudo /usr/lib/jellyfin-ffmpeg/ffmpeg -v debug -init_hw_device rkmpp=rk -init_hw_device opencl=ocl@rk
+
+arm_release_ver: g13p0-01eac0, rk_so_ver: 10
+[AVHWDeviceContext @ 0xaaaae8321360] 1 OpenCL platforms found.
+[AVHWDeviceContext @ 0xaaaae8321360] 1 OpenCL devices found on platform "ARM Platform".
+[AVHWDeviceContext @ 0xaaaae8321360] 0.0: ARM Platform / Mali-G610 r0p0
+[AVHWDeviceContext @ 0xaaaae8321360] cl_arm_import_memory found as platform extension.
+[AVHWDeviceContext @ 0xaaaae8321360] cl_khr_image2d_from_buffer found as platform extension.
+[AVHWDeviceContext @ 0xaaaae8321360] DRM to OpenCL mapping on ARM function found (clImportMemoryARM).
+...
+```
+
+### 7 设置jellyfin
+
+#### 7.1登录jellyfin客户端
+
+在浏览器输入`<魔云腾主机ip>+8096`进入jellyfin主机端
+
+如下图所示：
+
+![image-20241101112646564](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241101112646564.png)
+
+自行设置用户名和密码登录
+
+#### 7.2 设置
+
+在设置中启用RKMPP并取消选中不支持的编解码器
+
+![image-20241101112913219](C:\Users\27907\AppData\Roaming\Typora\typora-user-images\image-20241101112913219.png)
+
+==**设置完后请在最下面保存**==
+
+### 8 在linux上验证
+
+目前没有可靠的方法可以读取 Rockchip SoC 上 VPU 的占用情况。
+
+但您仍然可以通过读取其他引擎来验证这一点，例如 RGA （2D hwaccel blitter）。
+
+1. 在 Jellyfin Web 客户端播放视频，通过设置较低的分辨率或比特率触发视频转码。
+
+2. 使用`sudo watch -n 1 cat /sys/kernel/debug/rkrga/load`命令检查 RGA 引擎的占用情况。
+
+```
+Every 1.0s: cat /sys/kernel/debug/rkrga/load
+num of scheduler = 3
+================= load ==================
+scheduler[0]: rga3_core0
+         load = 42%
+-----------------------------------
+scheduler[1]: rga3_core1
+         load = 27%
+-----------------------------------
+scheduler[2]: rga2
+         load = 0%
+-----------------------------------
+         process 17: pid = 217002, name: /usr/lib/jellyfin-ffmpeg/ffmpeg ... -init_hw_device rkmpp=rk -hwaccel rkmpp -hwaccel_output_format drm_prime ...
+```
+
+
+
+
+
+==测试此项目时会下载mali的其他版本，若在此项目后重新运行rkllm大模型则会导致出现firmware固件错误，解决方法为卸载此项目所安装的`libmali-valhall-g610-g13p0-gbm_1.9-1_arm64.deb`软件并将`/lib/firmware`下`g610`文件夹下固件文件cp到`/lib/firmware`下后重新运行==
