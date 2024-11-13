@@ -14,6 +14,7 @@ const sidebars: SidebarsConfig = {
   // By default, Docusaurus generates a sidebar from the docs folder structure
   docs: [
     'client',
+    'ubuntu22.04使用',
   ],
   tutorial: [
     {
