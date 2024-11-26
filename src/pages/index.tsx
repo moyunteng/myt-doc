@@ -19,7 +19,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/ubuntu22.04使用">
+            to="/docs/魔云腾主机介绍">
             ZENUS Q 系列
           </Link>
         </div>
