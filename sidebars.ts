@@ -14,14 +14,36 @@ const sidebars: SidebarsConfig = {
   // By default, Docusaurus generates a sidebar from the docs folder structure
   docs: [
     'client',
-    '魔云腾主机介绍',
-    'ubuntu22.04使用',
-    '按需制定文件系统',
-    '运行rkllm大模型',
-    '运行rknn demo',
-    '运行rkmpp demo',
-    '安装librga库',
-    '运行jellyfin',
+  
+    //'ubuntu22.04使用',
+      {
+        type: 'category',
+        label: '魔云腾主机的介绍与使用',
+        items: [
+          '魔云腾主机介绍',
+        ],
+      },
+    
+      {
+        type: 'category',
+        label: '开发',
+        items: [
+          '按需制定文件系统',
+            {
+              type: 'category',
+              label: '应用案例',
+              items: [
+                '运行rkllm大模型',
+                '运行rknn demo',
+                '运行rkmpp demo',
+                '安装librga库',
+                '运行jellyfin',
+
+              ],
+            },
+        ],
+      },
+    
   ],
   tutorial: [
     {
