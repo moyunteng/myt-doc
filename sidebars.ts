@@ -21,6 +21,7 @@ const sidebars: SidebarsConfig = {
         label: '魔云腾主机的介绍与使用',
         items: [
           '魔云腾主机介绍',
+          'ubuntu使用',
         ],
       },
     
