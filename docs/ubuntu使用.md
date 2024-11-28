@@ -181,13 +181,7 @@ wq 保存退出
    # 个人配置如下
    {
        "data-root":"<迁移目录>",
-       "registry-mirrors": ["http://hub-mirror.c.163.com"],
-       "runtimes": {
-           "nvidia": {
-               "path": "nvidia-container-runtime",
-               "runtimeArgs": []
-       	}
-   	}
+       
    }
    ```
 
@@ -200,4 +194,44 @@ wq 保存退出
    systemctl start docker.service
    ```
 
-   
+### 6.设置静态ip
+
+1. 打开终端并输入以下命令以编辑网络配置文件：
+
+```
+sudo vim /etc/network/interfaces
+```
+
+2. 找到你要配置的网络接口（通常是 `eth0` 或 `ens33` 等），然后添加以下内容：
+
+```
+# Example for eth0 interface
+auto eth0
+iface eth0 inet static
+    address 192.168.xxx.xxx      # 设置静态 IP 地址
+    netmask 255.255.255.0      # 设置子网掩码
+    gateway 192.168.xxx.1       # 设置网关
+    dns-nameservers 8.8.8.8 8.8.4.4  # 设置 DNS 服务器
+
+```
+
+3. 保存并关闭文件后，重启网络服务以应用配置：
+
+```
+sudo systemctl restart networking
+```
+
+或者使用 `ifdown` 和 `ifup` 命令：
+
+```
+sudo ifdown eth0 && sudo ifup eth0
+```
+
+4. 使用`ifconfig` 命令来验证配置是否正确应用：
+
+```
+ifconfig
+```
+
+
+
