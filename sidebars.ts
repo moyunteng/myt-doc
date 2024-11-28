@@ -22,7 +22,6 @@ const sidebars: SidebarsConfig = {
         items: [
           '魔云腾主机介绍',
           'ubuntu使用',
-
         ],
       },
     
