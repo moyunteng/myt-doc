@@ -73,6 +73,12 @@ const config: Config = {
         {
           type: 'docSidebar',
           position: 'left',
+          sidebarId: 'zenus_q',
+          label: 'ZENUS Q系列',
+        },
+        {
+          type: 'docSidebar',
+          position: 'left',
           sidebarId: 'tutorial',
           label: '安卓教程',
         },
