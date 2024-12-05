@@ -70,17 +70,43 @@ const config: Config = {
           docId: 'client',
           label: '文档',
         },
-        {
+        /*{
           type: 'docSidebar',
           position: 'left',
-          sidebarId: 'zenus_q',
-          label: 'ZENUS Q系列',
-        },
+          sidebarId: 'zeus_q',
+          label: 'ZEUS Q系列',
+        },*/
         {
           type: 'docSidebar',
           position: 'left',
           sidebarId: 'tutorial',
           label: '安卓教程',
+        },
+
+       {
+          type: 'dropdown',
+          label: 'ZEUS系列',
+          position: 'left',
+          sidebarId: 'zeus_q',
+          items:[
+            {
+              label: 'Q1系列',
+              to:'/docs/zeus-q/魔云腾主机介绍',
+            }
+          ]              
+        },
+            
+        {
+          type: 'dropdown',
+          label: '客户端',
+          position: 'left',
+          sidebarId: 'kehuduan',
+          items:[
+            {
+              label: '客户端',
+              to:'/docs/kehuduan/PC客户端',
+            }
+          ]              
         },
         // {to: '/blog', label: 'Blog', position: 'left'},
         // {

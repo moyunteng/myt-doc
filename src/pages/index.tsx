@@ -19,8 +19,8 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/zenus-q/魔云腾主机介绍">
-            ZENUS Q 系列
+            to="/docs/zeus-q/魔云腾主机介绍">
+            ZEUS Q 系列
           </Link>
         </div>
       </div>

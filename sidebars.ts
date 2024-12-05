@@ -21,14 +21,16 @@ const sidebars: SidebarsConfig = {
       dirName: 'tutorial'
     },
   ],
-  zenus_q: [
+  zeus_q: [
     
       {
         type: 'category',
         label: '魔云腾主机的介绍与使用',
         items: [
-          'zenus-q/魔云腾主机介绍',
-          'zenus-q/ubuntu使用',
+          'zeus-q/魔云腾主机介绍',
+          'zeus-q/安装指南',
+          'zeus-q/ubuntu使用',
+          
         ],
       },
     
@@ -36,22 +38,38 @@ const sidebars: SidebarsConfig = {
         type: 'category',
         label: '开发',
         items: [
-          'zenus-q/按需制定文件系统',
+          'zeus-q/按需制定文件系统',
             {
               type: 'category',
               label: '应用案例',
               items: [
-                'zenus-q/运行rkllm大模型',
-                'zenus-q/运行rknn demo',
-                'zenus-q/运行rkmpp demo',
-                'zenus-q/安装librga库',
-                'zenus-q/运行jellyfin',
+                'zeus-q/运行rkllm大模型',
+                'zeus-q/运行rknn demo',
+                'zeus-q/运行rkmpp demo',
+                'zeus-q/安装librga库',
+                'zeus-q/运行jellyfin',
 
               ],
             },
         ],
       },
+      'zeus-q/维护与保养',
+      'zeus-q/常见问题',
+      'zeus-q/安全信息',
+      'zeus-q/保修服务政策',
   ],
+  kehuduan:[
+    {
+      type: 'category',
+      label: '客户端使用说明',
+      items: [
+        'kehuduan/PC客户端',
+        'kehuduan/带屏幕机型操作',
+        
+        
+      ],
+    },
+  ]
   // But you can create a sidebar manually
   /*
   tutorialSidebar: [
