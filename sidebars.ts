@@ -21,36 +21,46 @@ const sidebars: SidebarsConfig = {
       dirName: 'tutorial'
     },
   ],
+  MYTOS开发教程:[
+    'MYTOS/通用常规问题介绍',    
+    'MYTOS/SSH连接',
+    'MYTOS/格式化固态硬盘',
+    'MYTOS/设备助手使用注意规范',
+    'MYTOS/手动配置网络参数',
+    'MYTOS/数据安全备份及迁移',
+    'MYTOS/清理未使用的安卓镜像',
+    'MYTOS/按需制定文件系统',
+    
+    {
+      type: 'category',
+      label: '开发',
+      items: [
+        
+          {
+            type: 'category',
+            label: '应用案例',
+            items: [
+              'MYTOS/运行rkllm大模型',
+              'MYTOS/运行rknn demo',
+              'MYTOS/运行rkmpp demo',
+              'MYTOS/安装librga库',
+              'MYTOS/运行jellyfin',
+
+            ],
+          },
+      ],
+    },
+  ],
   zeus_q: [
     
       {
         type: 'category',
-        label: '魔云腾主机的介绍与使用',
+        label: 'Q1主机的介绍与使用',
         items: [
-          'zeus-q/魔云腾主机介绍',
-          'zeus-q/安装指南',
+          'zeus-q/Q1主机介绍',
+          'zeus-q/MYT Zeus Q1 主机固件',
           'zeus-q/ubuntu使用',
-          
-        ],
-      },
-    
-      {
-        type: 'category',
-        label: '开发',
-        items: [
-          'zeus-q/按需制定文件系统',
-            {
-              type: 'category',
-              label: '应用案例',
-              items: [
-                'zeus-q/运行rkllm大模型',
-                'zeus-q/运行rknn demo',
-                'zeus-q/运行rkmpp demo',
-                'zeus-q/安装librga库',
-                'zeus-q/运行jellyfin',
-
-              ],
-            },
+          'zeus-q/安装指南',
         ],
       },
       'zeus-q/维护与保养',
@@ -59,14 +69,23 @@ const sidebars: SidebarsConfig = {
       'zeus-q/保修服务政策',
   ],
   kehuduan:[
+
     {
       type: 'category',
-      label: '客户端使用说明',
+      label: 'PC客户端使用说明',
       items: [
         'kehuduan/PC客户端',
         'kehuduan/带屏幕机型操作',
-        
-        
+        'kehuduan/安全模式',
+        'kehuduan/正确设置安卓DNS',        
+      ],
+    },
+    {
+      type: 'category',
+      label: 'WEB客户端使用说明',
+      items: [
+        'kehuduan/Myt Zues C1-VPC网络管理',
+               
       ],
     },
   ]

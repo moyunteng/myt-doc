@@ -83,19 +83,19 @@ const config: Config = {
           label: '安卓教程',
         },
 
-       {
+        {
           type: 'dropdown',
-          label: 'ZEUS系列',
+          label: 'MYTOS开发教程',
           position: 'left',
-          sidebarId: 'zeus_q',
+          sidebarId: 'MYTOS开发教程',
           items:[
             {
-              label: 'Q1系列',
-              to:'/docs/zeus-q/魔云腾主机介绍',
+              label: 'MYTOS开发教程',
+              to:'/docs/MYTOS/通用常规问题介绍',
             }
           ]              
         },
-            
+
         {
           type: 'dropdown',
           label: '客户端',
@@ -103,8 +103,25 @@ const config: Config = {
           sidebarId: 'kehuduan',
           items:[
             {
-              label: '客户端',
+              label: 'PC端',
               to:'/docs/kehuduan/PC客户端',
+            },
+            {
+              label: 'WEB端',
+              to:'/docs/kehuduan/Myt Zues C1-VPC网络管理',
+            }
+          ]              
+        },
+
+        {
+          type: 'dropdown',
+          label: '单路系列',
+          position: 'left',
+          sidebarId: 'zeus_q',
+          items:[
+            {
+              label: 'Q1系列',
+              to:'/docs/zeus-q/Q1主机介绍',
             }
           ]              
         },
