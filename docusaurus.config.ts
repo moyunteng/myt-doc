@@ -109,7 +109,11 @@ const config: Config = {
             {
               label: 'WEB端',
               to:'/docs/kehuduan/Myt Zues C1-VPC网络管理',
-            }
+            },
+            {
+              label: 'IOS端',
+              to:'/docs/kehuduan/魔云趣联 （IPA文件）',
+            },
           ]              
         },
 
@@ -117,12 +121,20 @@ const config: Config = {
           type: 'dropdown',
           label: '单路系列',
           position: 'left',
-          sidebarId: 'zeus_q',
+          sidebarId: 'zeus',
           items:[
+            {
+              label: 'A1系列',
+              to:'/docs/A1/MYT Zeus A1 主机固件',
+            },
             {
               label: 'Q1系列',
               to:'/docs/zeus-q/Q1主机介绍',
-            }
+            },
+            {
+              label: 'C1系列',
+              to:'/docs/zeus-c1/C1 ubuntu固件',
+            },
           ]              
         },
         // {to: '/blog', label: 'Blog', position: 'left'},

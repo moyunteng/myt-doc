@@ -21,3 +21,27 @@
   align-items: center;
   justify-content: center;
 }
+
+.buttons_size{
+  background-color: var(--ifm-button-background-color);
+  border: var(--ifm-button-border-width) solid var(--ifm-button-border-color);
+  border-radius: var(--ifm-button-border-radius);
+  cursor: pointer;
+  font-size: calc(.875rem*var(--ifm-button-size-multiplier));
+  font-weight: var(--ifm-button-font-weight);
+  line-height: 1.5;
+  padding: calc(var(--ifm-button-padding-vertical)*var(--ifm-button-size-multiplier)) calc(var(--ifm-button-padding-horizontal)*var(--ifm-button-size-multiplier));
+  text-align: center;
+  transition-duration: var(--ifm-button-transition-duration);
+  transition-property: color,background,border-color;
+  user-select: none;
+  white-space: nowrap;
+  --ifm-button-size-multiplier: 1.35;
+  --ifm-button-background-color: var(--ifm-color-secondary);
+  --ifm-button-border-color: var(--ifm-color-secondary);
+  width: 200px;
+  margin: 10px;
+  margin-top:30px;
+  color: #000;
+  text-decoration: var(--ifm-link-decoration);
+}

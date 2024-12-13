@@ -51,8 +51,16 @@ const sidebars: SidebarsConfig = {
       ],
     },
   ],
-  zeus_q: [
-    
+  zeus: [
+      {
+        type: 'category',
+        label: 'A1主机的介绍与使用',
+        items: [
+          'A1/MYT Zeus A1 主机固件',
+          
+        ],
+      },
+      
       {
         type: 'category',
         label: 'Q1主机的介绍与使用',
@@ -63,6 +71,15 @@ const sidebars: SidebarsConfig = {
           'zeus-q/安装指南',
         ],
       },
+      {
+        type: 'category',
+        label: 'C1主机的介绍与使用',
+        items: [
+          'zeus-c1/C1 ubuntu固件',
+          
+        ],
+      },
+      
       'zeus-q/维护与保养',
       'zeus-q/常见问题',
       'zeus-q/安全信息',
@@ -85,10 +102,12 @@ const sidebars: SidebarsConfig = {
       label: 'WEB客户端使用说明',
       items: [
         'kehuduan/Myt Zues C1-VPC网络管理',
-               
+        'kehuduan/Myt Zues C8-VPC网络管理', 
+        'kehuduan/魔云趣联 （IPA文件）',    
       ],
     },
-  ]
+  ],
+
   // But you can create a sidebar manually
   /*
   tutorialSidebar: [
