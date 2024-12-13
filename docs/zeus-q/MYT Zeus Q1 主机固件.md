@@ -88,6 +88,6 @@
 
 3.开始刷机：运行\RKDevTool.exe--点击执行即可
 
-![img](http://bbs.moyunteng.com/data/attachment/forum/202410/29/154225wwxed14c7yyzxy19.png)
+![img](/img/zjgj1.png)
 
-![img](http://bbs.moyunteng.com/data/attachment/forum/202410/29/154229v157wgdgozwqads6.png)
+![img](/img/zjgj2.png)

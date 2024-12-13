@@ -9,7 +9,6 @@ vpc网络支持将云机的网络数据通过标准的socks5协议转发至自�
 ### VPC网络接入场景说明
 
 VPC网络接入分别有2个场景
-
 1、在myt zues C8服务器中支持2种部署模式第一种是C8服务器管理控制台自带VPC网络，此vpc接入只支持云机网络属性为“桥接网络”，不支持私有网络；
 
 第二种是在业务板系统中安装并启用“web管理插件”功能，此web管理插件中也支持vpc网络，但是此vpc网络只支持“私有网络”，不支持桥接网络
@@ -24,7 +23,7 @@ VPC网络接入分别有2个场景
 
 ### Zeus C1 VPC网络接入拓扑图
 
-![img](http://doc.moyunteng.com/upload/c1-1.png)
+![img](/img/C1/c1.png)
 
 
 
@@ -45,13 +44,13 @@ VPC网络接入分别有2个场景
 **web管理插件安装步骤**
 
 1、选择需要安装插件的业务板卡IP->我的主机->插件管理
-![img](http://doc.moyunteng.com/upload/c1-2-cion.png)
+![img](/img/C1/c2.png)
 
 2、选择插件名称：C1 Web管理系统->安装（此过程预计等待1分钟，窗口不可关闭，否则重新点击安装）
-![img](http://doc.moyunteng.com/upload/c1-3.png)
+![img](/img/C1/c3.png)
 
 3、等待1分钟左右后状态由“安装”变成打开，则表示完成安装
-![img](http://doc.moyunteng.com/upload/c1-4-tlla.png)
+![img](/img/C1/c4.png)
 
 ### 新建云机
 
@@ -65,11 +64,10 @@ Myt Zues C1新建云机有2种方法、可以在PC客户端或者web端新建云
 
 1、选择需要安装插件的业务板卡IP->我的主机->插件管理->C1 Web管理系统->打开->在弹出的网址中输入账户
 默认账户：mytyyds
-![img](http://doc.moyunteng.com/upload/c1-6.png)
+![img](/img/C1/c5.png)
 
-
-2、在安卓管理选项中选择-》安卓列表->选择一个实例中（1-12）->创建
-![img](http://doc.moyunteng.com/upload/c1-7.png)
+2、在安卓管理选项中选择-`安卓列表->选择一个实例中（1-12）->创建
+![img](/img/C1/c6.png)
 
 3、根据需求选择新建的数量（请保证授权已经购买）->选择镜像（默认最新）->选择DNS->确认
 
@@ -80,62 +78,60 @@ Myt Zues C1新建云机有2种方法、可以在PC客户端或者web端新建云
 :::
 
 授权在pc客户端中购买、web端所有新建的云机都是最新的镜像，dns根据使用场景选择，国外用户选择谷歌dns，国内用户选择阿里dns
-![img](http://doc.moyunteng.com/upload/c1-8.png)
+![img](/img/C1/c7.png)
 
-
-4、在等待第一次下载创建完成之后，在安卓列表中会新增一个云机，点击《开机》按钮，开机之后等待系统启动在连接（预计30秒）
-![img](http://doc.moyunteng.com/upload/c1-9.png)
-
+4、在等待第一次下载创建完成之后，在安卓列表中会新增一个云机，点击`开机`按钮，开机之后等待系统启动在连接（预计30秒）
+![img](/img/C1/c8.png)
 
 5、正常开机之后的状态显示如下
-![img](http://doc.moyunteng.com/upload/c1-10.png)
+![img](/img/C1/c9.png)
 
 
 
 ### 配置VPC线路添加socks5线路
 
 1、在pc客户端中打开web管理控制台->我的主机->选择需要操作的C1盒子IP->插件管理->C1 Web管理系统->打开->登陆系统（账户：mytyyds）
-![img](http://doc.moyunteng.com/upload/c1-6.png)
+![img](/img/C1/c10.png)
 
 *2、如果已知盒子的IP，可直接在浏览器中输入ip:8000,我这里的演示的IP是192.168.150.140，那么在浏览器中输入：*[*http://192.168.150.140:8000*](http://192.168.150.140:8000/)
 
-3、在管理控制台中点击《VPC网络管理》->《添加VPC网络》->填写正确的socks账户信息->确认;
+3、在管理控制台中点击`VPC网络管理`->`添加VPC网络`->填写正确的socks账户信息->确认;
 提示：如果有多条可用持续添加，但是IP地址不能重复，一条线路可用分配给多个云机，但一个云机同一时刻只能使用一条线路
-![img](http://doc.moyunteng.com/upload/c1-11.png)
+![img](/img/C1/c11.png)
 
 
 
 ### 测试运行vpc线路
 
-点击《测试连接》，显示测试通过表示正常，否则检查socks5的配置和信息的正确性，测试通过之后点击《运行》
-![img](http://doc.moyunteng.com/upload/c1-12.png)
-![img](http://doc.moyunteng.com/upload/c1-13.png)
+点击`测试连接`，显示测试通过表示正常，否则检查socks5的配置和信息的正确性，测试通过之后点击`运行`
+![img](/img/C1/c12.png)
+![img](/img/C1/c13.png)
 
 
 
 ### 云机绑定VPC线路
 
-选择安卓管理选项->《安卓列表》->选择刚才新建的云机T1001->《选择网络》->《选择VPC网络》->选择刚才新建的vpc线路->确认
+选择安卓管理选项->`安卓列表`->选择刚才新建的云机T1001->`选择网络`->`选择VPC网络`->选择刚才新建的vpc线路->确认
 
 :::tip
 
-如果没有《选择网络》按钮，请在pc客户端新建云机的时候，把《桥接网络》选择：关闭
+如果没有`选择网络`按钮，请在pc客户端新建云机的时候，把`桥接网络`选择：关闭
 
 :::
 
-![img](http://doc.moyunteng.com/upload/c1-14.png)
-![img](http://doc.moyunteng.com/upload/c1-18.png)
-![img](http://doc.moyunteng.com/upload/c1-16.png)
+![img](/img/C1/c14.png)
+![img](/img/C1/c15.png)
+![img](/img/C1/c16.png)
 
 
 
 ### 验证云机绑定是否生效
 
-打开刚才新建的云机T1001，选择《进入云机》->打开云机桌面的《浏览器》，输入：ip138.com，检查ip是否发生变动，发生变动则生效
-![img](http://doc.moyunteng.com/upload/c1-17.png)
+打开刚才新建的云机T1001，选择`进入云机`->打开云机桌面的`浏览器`，输入：ip138.com，检查ip是否发生变动，发生变动则生效
+![img](/img/C1/c17.png)
 
 pc客户端中查看方法一样，点击需要查看的C1盒子IP->选择刚才新建和绑定的云机T1001->竖屏->点击T1001窗口->打开云机桌面的浏览器->输入：ip138.com
-![img](http://doc.moyunteng.com/upload/c1-20.png)
+![img](/img/C1/c18.png)
 
 ### 常见问题
 
@@ -162,15 +158,15 @@ pc客户端中查看方法一样，点击需要查看的C1盒子IP->选择刚才
 
 socks5://user1:123456@192.168.100.120:10811 https://ifconfig.me/ip
 
-![img](http://doc.moyunteng.com/upload/vpc-9.png)
+![img](/img/C1/c19.png)
 
 **3、填写服务器IP地址时提示：The Ip value xxxxxxxxxxx  is not a valid IPv4 address**
 
 答：服务器的IP选项目前只支持IP地址格式，比如：x.x.x.x ;如果不知道服务器的IP只知道域名，可在cmd命令行中ping 域名，将返回的IP填写进去
-**![img](http://doc.moyunteng.com/upload/vpc-8.png)**
-**4、在安卓列表中没有《选择网络》按钮**
+![img](/img/C1/c20.png)
+**4、在安卓列表中没有`选择网络`按钮**
 
-答：在web控制台中新建的云机不会存在此问题，如果在pc客户端新建的云机，请关闭《桥接网络》选项卡；新建云机关闭桥接网络，或者更新镜像参照“VPC配置准备工作”
+答：在web控制台中新建的云机不会存在此问题，如果在pc客户端新建的云机，请关闭`桥接网络`选项卡；新建云机关闭桥接网络，或者更新镜像参照“VPC配置准备工作”
 
 **5、绑定云机之后没有网络，打不开网页**
 
