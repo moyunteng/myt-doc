@@ -64,12 +64,6 @@ const config: Config = {
         src: 'img/72.png',
       },
       items: [
-        {
-          type: 'doc',
-          position: 'left',
-          docId: 'client',
-          label: '文档',
-        },
         /*{
           type: 'docSidebar',
           position: 'left',
