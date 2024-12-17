@@ -16,29 +16,29 @@ function HomepageHeader() {
           {siteConfig.title}
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
+        <div className={styles.buttons}> 
           <Link
             className={styles.buttons_size}
-            to="/docs/tutorial/contact">
-            安卓教程
-          </Link>  
-          <Link
-            className={styles.buttons_size}
-            to="/docs/MYTOS/通用常规问题介绍">
+            to="/docs/MYTOS/魔云腾超级SDK">
             MYTOS开发教程
-          </Link>  
-          </div>
-          <div className={styles.buttons}>
+          </Link>            
           <Link
             className={styles.buttons_size}
             to="/docs/kehuduan/PC客户端">
             客户端
           </Link>
+          </div>
+          <div className={styles.buttons}>
           <Link
             className={styles.buttons_size}
             to="/docs/zeus-c1/C1 ubuntu固件">
             单路系列
-          </Link>        
+          </Link>
+          <Link
+            className={styles.buttons_size}
+            to="/docs/zeus-c8/Zeus C8 主机固件">
+            多路系列
+          </Link>         
         </div>
       </div>
     </header>
