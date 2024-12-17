@@ -91,7 +91,7 @@ const config: Config = {
           items:[
             {
               label: 'MYTOS开发教程',
-              to:'/docs/MYTOS/通用常规问题介绍',
+              to:'/docs/MYTOS/魔云腾超级SDK',
             }
           ]              
         },
@@ -124,16 +124,28 @@ const config: Config = {
           sidebarId: 'zeus',
           items:[
             {
-              label: 'A1系列',
-              to:'/docs/A1/MYT Zeus A1 主机固件',
-            },
+              label: 'C1系列',
+              to:'/docs/zeus-c1/C1 ubuntu固件',
+            },            
             {
               label: 'Q1系列',
               to:'/docs/zeus-q/Q1主机介绍',
             },
             {
-              label: 'C1系列',
-              to:'/docs/zeus-c1/C1 ubuntu固件',
+              label: 'A1系列',
+              to:'/docs/A1/Zeus A1 主机固件',
+            },
+          ]              
+        },
+        {
+          type: 'dropdown',
+          label: '多路系列',
+          position: 'left',
+          sidebarId: 'zeuss',
+          items:[
+            {
+              label: 'C8系列',
+              to:'/docs/zeus-c8/Zeus C8 主机固件',
             },
           ]              
         },
