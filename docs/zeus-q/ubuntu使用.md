@@ -95,6 +95,7 @@ Proceed anyway? (y,N)
 
 ```
 mount /dev/nvme0xxx <指定目录>
+#例如： mount /dev/nvme0n1p1 /app
 ```
 
 再次查看磁盘是否挂载
@@ -122,7 +123,7 @@ sudo vim /etc/fstab
  在文件尾部添加
 
 ```
-UUID=2fd18098-xxxx-xxxx-xxxx-xxxxxxxxxxx  /app  ext4  defaults  0  0
+UUID=2fd18098-xxxx-xxxx-xxxx-xxxxxxxxxxx  <指定目录>  ext4  defaults  0  0
 ```
 
 wq 保存退出
