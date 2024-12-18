@@ -84,8 +84,20 @@ const config: Config = {
           sidebarId: 'MYTOS开发教程',
           items:[
             {
-              label: 'MYTOS开发教程',
-              to:'/docs/MYTOS/魔云腾超级SDK',
+              label: 'API接口',
+              to:'/docs/MYTOS/安卓管理控制接口对接介绍',
+            },
+            {
+              label: '使用教程',
+              to:'/docs/MYTOS/SSH连接',
+            },
+            {
+              label: '知识科普',
+              to:'/docs/MYTOS/MYTOS中内置SOCKS5代理',
+            },
+            {
+              label: '应用实例',
+              to:'/docs/MYTOS/运行rkllm大模型',
             }
           ]              
         },
@@ -140,6 +152,10 @@ const config: Config = {
             {
               label: 'C8系列',
               to:'/docs/zeus-c8/Zeus C8 主机固件',
+            },
+            {
+              label: 'M48系列',
+              to:'/docs/M48/M48接口介绍',
             },
           ]              
         },

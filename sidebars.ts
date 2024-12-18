@@ -16,18 +16,31 @@ const sidebars: SidebarsConfig = {
     
       
     'kehuduan/如何设置魔云腾安卓平板模式' ,  
-
+    'MYTOS/导入抓包证书教程',
 
     
   ],
   MYTOS开发教程:[
-    'MYTOS/魔云腾超级SDK',
-    'MYTOS/超级SDK导出导入安卓教程',
-    'MYTOS/MYTOS 镜像版本列表',
-    'MYTOS/通用常规问题介绍',    
     {
       type: 'category',
-      label: '开发',
+      label: 'API接口',
+      items: [
+        'MYTOS/安卓管理控制接口对接介绍',
+        'MYTOS/魔云腾超级SDK',
+        'MYTOS/超级SDK导出导入安卓教程',
+        'MYTOS/自动化MYT_RPA_SDK',
+        'MYTOS/超级SDK设置多核多线程',
+        'MYTOS/MYTOS 镜像版本列表',
+        'MYTOS/屏幕自动化辅助控制系统接口',
+        'MYTOS/设备信息接口调用说明',
+        'MYTOS/基于docker-api封装的成品API',
+        'MYTOS/易语言对接自动化控制模块Demo',
+      ],
+    }, 
+      'MYTOS/通用常规问题介绍', 
+    {
+      type: 'category',
+      label: '使用教程',
       items: [
         'MYTOS/SSH连接',
         'MYTOS/格式化固态硬盘',
@@ -36,19 +49,34 @@ const sidebars: SidebarsConfig = {
         'MYTOS/数据安全备份及迁移',
         'MYTOS/清理未使用的安卓镜像',
         'MYTOS/按需制定文件系统',
-          {
-            type: 'category',
-            label: '应用案例',
-            items: [
-              'MYTOS/运行rkllm大模型',
-              'MYTOS/运行rknn demo',
-              'MYTOS/运行rkmpp demo',
-              'MYTOS/安装librga库',
-              'MYTOS/运行jellyfin',
-              'MYTOS/运行redroid',
+        'MYTOS/服务商限制访问的解决方案',
+          
+      ],
+    },
+    {
+      type: 'category',
+      label: '知识科普',
+      items: [
+        'MYTOS/MYTOS中内置SOCKS5代理',
+        'MYTOS/通过docker官方API调用查询控制MYTOS',
+        'MYTOS/3588更换ssd后格式化方法',
+        'MYTOS/M.2-NVME-带缓存的优劣',
+        'MYTOS/安卓系统镜像标识含义介绍',
+        'MYTOS/底层固件使用Alpine Linux系统开发介绍',
+        'MYTOS/关于docker方面的知识解答',
+      ],
+    },  
+    {
+      type: 'category',
+      label: '应用案例',
+      items: [
+        'MYTOS/运行rkllm大模型',
+        'MYTOS/运行rknn demo',
+        'MYTOS/运行rkmpp demo',
+        'MYTOS/安装librga库',
+        'MYTOS/运行jellyfin',
+        'MYTOS/运行redroid',
 
-            ],
-          },
       ],
     },
   ],
@@ -58,7 +86,7 @@ const sidebars: SidebarsConfig = {
         label: 'C1主机的介绍与使用',
         items: [
           'zeus-c1/C1 ubuntu固件',
-          
+          'zeus-c1/Zeus C1 WEB插件给安卓指定VPC教程',
         ],
       },  
     
@@ -127,6 +155,14 @@ const sidebars: SidebarsConfig = {
       items: [
         'zeus-c8/Zeus C8 主机固件', 
         'zeus-c8/Zeus C8 Windows刷机文件系统教程', 
+      ],
+    },
+    {
+      type: 'category',
+      label: 'M48主机的介绍与使用',
+      items: [
+        'M48/M48接口介绍', 
+
       ],
     },
   ],
