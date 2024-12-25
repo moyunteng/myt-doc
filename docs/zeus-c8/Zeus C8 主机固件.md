@@ -1,3 +1,6 @@
+---
+slug: /zeus-c8/Zeus C8 gujian
+---
 ## MYT Zenus C8 主机固件
 
 百度网盘：[下载地址](https://pan.baidu.com/s/1dSmD0FFuWBGjpqDArYm2Xg?pwd=w90m)

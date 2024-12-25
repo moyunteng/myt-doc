@@ -1,3 +1,6 @@
+---
+slug: /zeus-c8/Zeus C8 windowssjwjxtjc
+---
 ## Zeus C8 Windows刷机文件系统教程
 
 注意事项：刷写此版本固件会清空老版的配置信息，请注意！

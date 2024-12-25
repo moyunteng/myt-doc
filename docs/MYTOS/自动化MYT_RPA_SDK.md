@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/zdhMYT_RPA_SDK
+---
 **自动化控制 SDK 接口概述**
 
 本SDK 提供了一套在Android 之外的一套控制输入等相关功能的接口,通过TCP与Android 系统通信 实现指令下发.

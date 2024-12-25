@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/SOCKS5daili
+---
 MYTOS中内置了tun2socks go版本SOCKS5客户端
 
 可通过HTTP接口GET方式调用查询

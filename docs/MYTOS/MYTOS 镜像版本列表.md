@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/MYTOSjxbblb
+---
 ***镜像名称说明： MYTOS 镜像有4段组成  中间用 “—” 连接  例如 MYTOS-CQ-12-Base-v22.8.4*** 
 
 ***‘MYTOS’  表示系统版本名称***

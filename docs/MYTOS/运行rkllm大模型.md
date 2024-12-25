@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/yunxingrkllm
+---
 ## 运行rkllm大模型
 
 +++

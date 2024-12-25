@@ -1,3 +1,6 @@
+---
+slug: /kehuduan/PCkehuduan
+---
 # PC客户端基本使用说明
 
 ##  1.打开配套管理软件，识别设备

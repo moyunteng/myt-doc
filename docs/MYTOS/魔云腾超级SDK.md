@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/supersdk
+---
 # MYT SUPER SDK 正式发布了!
 
 **windows 版本 下载地址:** [点我下载](http://d.moyunteng.com/sdk/myt_sdk_v1.0.14.30.4.zip)(1.0.14.30.4)   

@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/dockergfapidy
+---
 魔云腾自研**安卓智能计算节点**中，docker作为控制管理容器安卓的中间件起着重要作用
 
 我们选择docker主要原因 是其生态完善 

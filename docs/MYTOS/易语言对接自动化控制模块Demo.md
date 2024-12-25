@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/yyydjzdhkzmk
+---
 ![img](/img/zskp/yyy2.gif) [易语言接口_20231122.zip](http://bbs.moyunteng.com/forum.php?mod=attachment&aid=MjMzfDg3ZTY2MTY5fDE3MzQ1MTE0Njd8MHw1Ng%3D%3D) 
 
  更新日期:2023.11.22 

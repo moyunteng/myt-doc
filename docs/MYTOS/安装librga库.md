@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/anzhuanglibrga
+---
 ## 安装librga库
 
 +++

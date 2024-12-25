@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/sdkszdhdxc
+---
 **找到myt_sdk的文件所在位置**
 
 ![image-20241217174523634](/img/dh1.png)

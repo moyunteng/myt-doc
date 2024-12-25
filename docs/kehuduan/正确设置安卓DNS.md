@@ -1,3 +1,6 @@
+---
+slug: /kehuduan/shezhianzhuoDNS
+---
 ## 正确设置安卓DNS
 
 首先大家要明确使用安卓处于海外还是国内
