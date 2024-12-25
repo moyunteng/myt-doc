@@ -85,19 +85,19 @@ const config: Config = {
           items:[
             {
               label: 'API接口',
-              to:'/docs/MYTOS/安卓管理控制接口对接介绍',
+              to:'/docs/MYTOS/guanliapijiekou',
             },
             {
               label: '使用教程',
-              to:'/docs/MYTOS/SSH连接',
+              to:'/docs/MYTOS/sshlianjie',
             },
             {
               label: '知识科普',
-              to:'/docs/MYTOS/MYTOS中内置SOCKS5代理',
+              to:'/docs/MYTOS/SOCKS5daili',
             },
             {
               label: '应用实例',
-              to:'/docs/MYTOS/运行rkllm大模型',
+              to:'/docs/MYTOS/yunxingrkllm',
             }
           ]              
         },
@@ -110,15 +110,15 @@ const config: Config = {
           items:[
             {
               label: 'PC端',
-              to:'/docs/kehuduan/PC客户端',
+              to:'/docs/kehuduan/PCkehuduan',
             },
             {
               label: 'WEB端',
-              to:'/docs/kehuduan/Myt Zues C1-VPC网络管理',
+              to:'/docs/kehuduan/C1-VPC',
             },
             {
               label: 'IOS端',
-              to:'/docs/kehuduan/魔云趣联 （IPA文件）',
+              to:'/docs/kehuduan/moyunqulianipa',
             },
           ]              
         },
@@ -131,15 +131,15 @@ const config: Config = {
           items:[
             {
               label: 'C1系列',
-              to:'/docs/zeus-c1/C1 ubuntu固件',
+              to:'/docs/zeus-c1/C1 ubuntu',
             },            
             {
               label: 'Q1系列',
-              to:'/docs/zeus-q/Q1主机介绍',
+              to:'/docs/zeus-q/Q1zhujijieshao',
             },
             {
               label: 'A1系列',
-              to:'/docs/A1/Zeus A1 主机固件',
+              to:'/docs/A1/A1zhujigujian',
             },
           ]              
         },
@@ -151,11 +151,11 @@ const config: Config = {
           items:[
             {
               label: 'C8系列',
-              to:'/docs/zeus-c8/Zeus C8 主机固件',
+              to:'/docs/zeus-c8/Zeus C8 gujian',
             },
             {
               label: 'M48系列',
-              to:'/docs/M48/M48接口介绍',
+              to:'/docs/M48/M48jiekou',
             },
           ]              
         },

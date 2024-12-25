@@ -19,24 +19,24 @@ function HomepageHeader() {
         <div className={styles.buttons}> 
           <Link
             className={styles.buttons_size}
-            to="/docs/MYTOS/魔云腾超级SDK">
+            to="/docs/MYTOS/guanliapijiekou">
             MYTOS开发教程
           </Link>            
           <Link
             className={styles.buttons_size}
-            to="/docs/kehuduan/PC客户端">
+            to="/docs/kehuduan/PCkehuduan">
             客户端
           </Link>
           </div>
           <div className={styles.buttons}>
           <Link
             className={styles.buttons_size}
-            to="/docs/zeus-c1/C1 ubuntu固件">
+            to="/docs/zeus-c1/C1 ubuntu">
             单路系列
           </Link>
           <Link
             className={styles.buttons_size}
-            to="/docs/zeus-c8/Zeus C8 主机固件">
+            to="/docs/zeus-c8/Zeus C8 gujian">
             多路系列
           </Link>         
         </div>

@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/sdkdrdcazjc
+---
 第一步：下载最新的超级SDK
 
 ![image-20241216155211339](/img/sdk1.png)

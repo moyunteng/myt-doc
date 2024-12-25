@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/yxjellyfin
+---
 ## 运行jellyfin
 
 +++

@@ -1,3 +1,7 @@
+---
+slug: /MYTOS/rknn  # 设置英文 URL 路径
+---
+
 ## 运行rknn demo
 
 +++

@@ -1,3 +1,6 @@
+---
+slug: /zeus-q/Q1zhujijieshao
+---
 :::danger
 
 **注意！这是Q1镜像，C1不可用，刷错后果自负！！！**

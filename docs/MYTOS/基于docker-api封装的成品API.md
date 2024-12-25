@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/docker-apifz
+---
 :::tip
 
 该API适用于易语言和WIN电脑上使用

@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/yxrkmpp
+---
 ## 运行rkmpp demo
 
 +++

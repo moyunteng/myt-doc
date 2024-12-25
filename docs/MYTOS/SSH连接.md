@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/sshlianjie
+---
 ## SSH连接
 
 从 Windows 10 版本开始，Windows 操作系统已经内置了一个 SSH 客户端，称为 OpenSSH 客户端。 这意味着你可以直接在 Windows 上使用命令行来进行 SSH 连接和操作，而无需安装额外的 SSH 客户端软件。  

@@ -1,3 +1,6 @@
+---
+slug: /MYTOS/yxredroid
+---
 # redroid-rk3588
 
 *适用于瑞芯微RK3588系列SoC的redroid镜像。*

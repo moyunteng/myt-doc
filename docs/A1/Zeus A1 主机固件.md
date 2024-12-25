@@ -1,3 +1,6 @@
+---
+slug: /A1/A1zhujigujian
+---
 ## Zeus A1 主机固件
 
 2024.06.17（稳定版）

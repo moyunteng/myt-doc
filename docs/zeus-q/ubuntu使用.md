@@ -1,3 +1,6 @@
+---
+slug: /zeus-q/ubuntushiyong
+---
 # Ubuntu使用
 
 该文件系统基于ubuntu22.04版本构建，使用方法与ubuntu22.04相同
