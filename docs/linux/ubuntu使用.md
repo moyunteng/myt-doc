@@ -1,5 +1,5 @@
 ---
-slug: /zeus-q/ubuntushiyong
+slug: /linux/ubuntushiyong
 ---
 # Ubuntu使用
 

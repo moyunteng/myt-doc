@@ -21,6 +21,11 @@ function HomepageHeader() {
             className={styles.buttons_size}
             to="/docs/MYTOS/guanliapijiekou">
             MYTOS开发教程
+          </Link>
+          <Link
+            className={styles.buttons_size}
+            to="/docs/linux/ubuntushiyong">
+            linux开发教程
           </Link>            
           <Link
             className={styles.buttons_size}

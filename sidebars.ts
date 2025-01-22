@@ -66,19 +66,7 @@ const sidebars: SidebarsConfig = {
         'MYTOS/关于docker方面的知识解答',
       ],
     },  
-    {
-      type: 'category',
-      label: '应用案例',
-      items: [
-        'MYTOS/运行rkllm大模型',
-        'MYTOS/运行rknn demo',
-        'MYTOS/运行rkmpp demo',
-        'MYTOS/安装librga库',
-        'MYTOS/运行jellyfin',
-        'MYTOS/运行redroid',
-
-      ],
-    },
+    
   ],
   zeus: [
       {
@@ -97,7 +85,7 @@ const sidebars: SidebarsConfig = {
         items: [
           'zeus-q/Q1主机介绍',
           'zeus-q/Zeus Q1 主机固件',
-          'zeus-q/ubuntu使用',
+          
           'zeus-q/安装指南',
         ],
       },
@@ -162,6 +150,23 @@ const sidebars: SidebarsConfig = {
       label: 'M48主机的介绍与使用',
       items: [
         'M48/M48接口介绍', 
+        'M48/M48服务器装箱清单及规格说明', 
+        'M48/M48快速安装说明', 
+      ],
+    },
+  ],
+  linux:[
+    'linux/ubuntu使用',
+    {
+      type: 'category',
+      label: '应用案例',
+      items: [
+        'linux/运行rkllm大模型',
+        'linux/运行rknn demo',
+        'linux/运行rkmpp demo',
+        'linux/安装librga库',
+        'linux/运行jellyfin',
+        'linux/运行redroid',
 
       ],
     },
