@@ -1,5 +1,5 @@
 ---
-slug: /MYTOS/yxredroid
+slug: /linux/yxredroid
 ---
 # redroid-rk3588
 

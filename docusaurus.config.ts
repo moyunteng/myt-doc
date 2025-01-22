@@ -95,9 +95,21 @@ const config: Config = {
               label: '知识科普',
               to:'/docs/MYTOS/SOCKS5daili',
             },
+          ]              
+        },
+        {
+          type: 'dropdown',
+          label: 'linux开发教程',
+          position: 'left',
+          sidebarId: 'linux开发教程',
+          items:[
+            {
+              label: 'ubuntu使用',
+              to:'/docs/linux/ubuntushiyong',
+            },
             {
               label: '应用实例',
-              to:'/docs/MYTOS/yunxingrkllm',
+              to:'/docs/linux/yunxingrkllm',
             }
           ]              
         },
