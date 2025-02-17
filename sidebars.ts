@@ -17,7 +17,7 @@ const sidebars: SidebarsConfig = {
       
     'kehuduan/如何设置魔云腾安卓平板模式' ,  
     'MYTOS/导入抓包证书教程',
-
+    'android/[网络相关] 使用frp穿透工具实现魔云腾公网访问使用',
     
   ],
   MYTOS开发教程:[
@@ -98,7 +98,7 @@ const sidebars: SidebarsConfig = {
         ],
       },
       
-      
+      'zeus-q/修改静态ip',
       'zeus-q/维护与保养',
       'zeus-q/常见问题',
       'zeus-q/安全信息',

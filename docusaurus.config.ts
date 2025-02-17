@@ -153,6 +153,10 @@ const config: Config = {
               label: 'A1系列',
               to:'/docs/A1/A1zhujigujian',
             },
+            {
+              label: '通用设置',
+              to:'/docs/zeus-q/jingtaiip',
+            },
           ]              
         },
         {
