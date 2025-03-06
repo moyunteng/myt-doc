@@ -235,6 +235,22 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+  
+  themes: [
+    // 添加本地搜索主题 ▼
+    [
+      '@easyops-cn/docusaurus-search-local',
+      {
+        hashed: true,          // 对搜索词加密
+        language: ['en', 'zh'],// 支持的语言
+        docsRouteBasePath: '/',// 文档路径
+        indexDocs: true, // 索引文档
+        indexBlog: true, // 索引博客
+        indexPages: false, // 不索引静态页
+        forceIgnoreNoIndex: true
+      }
+    ]
+  ],
 };
 
 export default config;

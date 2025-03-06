@@ -152,7 +152,9 @@ const sidebars: SidebarsConfig = {
         'M48/M48接口介绍', 
         'M48/M48服务器装箱清单及规格说明', 
         'M48/M48快速安装说明', 
-        'M48/ARM集群服务器-魔云腾M48视频'
+        'M48/ARM集群服务器-魔云腾M48视频',
+        'M48/M48固件',
+        'M48/M48刷机教程',
       ],
     },
   ],
@@ -168,6 +170,7 @@ const sidebars: SidebarsConfig = {
         'linux/安装librga库',
         'linux/运行jellyfin',
         'linux/运行redroid',
+        'linux/构建deepseek',
 
       ],
     },
