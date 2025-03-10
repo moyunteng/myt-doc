@@ -85,7 +85,7 @@ const sidebars: SidebarsConfig = {
         items: [
           'zeus-q/Q1主机介绍',
           'zeus-q/Zeus Q1 主机固件',
-          
+          'zeus-q/Q1 ubuntu固件',
           'zeus-q/安装指南',
         ],
       },
