@@ -18,7 +18,7 @@ const sidebars: SidebarsConfig = {
     'kehuduan/如何设置魔云腾安卓平板模式' ,  
     'MYTOS/导入抓包证书教程',
     'android/[网络相关] 使用frp穿透工具实现魔云腾公网访问使用',
-    'android/mytApi',
+    
     
   ],
   MYTOS开发教程:[
@@ -26,6 +26,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'API接口',
       items: [
+        'android/mytApi',
         'MYTOS/安卓管理控制接口对接介绍',
         'MYTOS/魔云腾超级SDK',
         'MYTOS/超级SDK导出导入安卓教程',
