@@ -26,8 +26,8 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'API接口',
       items: [
-        'android/mytApi',
         'MYTOS/安卓管理控制接口对接介绍',
+        'android/mytApi',
         'MYTOS/魔云腾超级SDK',
         'MYTOS/超级SDK导出导入安卓教程',
         'MYTOS/自动化MYT_RPA_SDK',
