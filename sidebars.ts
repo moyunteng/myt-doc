@@ -99,7 +99,14 @@ const sidebars: SidebarsConfig = {
           
         ],
       },
-      
+      {
+        type: 'category',
+        label: 'P1主机的介绍与使用',
+        items: [
+          'p1/p1刷机教程',
+          
+        ],
+      },
       'zeus-q/修改静态ip',
       'zeus-q/维护与保养',
       'zeus-q/常见问题',
