@@ -1,0 +1,14 @@
+$:
+  vscode:
+    - docker:
+        image: node:20
+        volumes:
+          - node_modules:copy-on-write
+      services:
+        - vscode
+        - docker
+      stages:
+        - name: npm install
+          script: npm install
+        - name: bash
+          script: bash
