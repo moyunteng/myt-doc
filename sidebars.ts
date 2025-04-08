@@ -75,7 +75,7 @@ const sidebars: SidebarsConfig = {
         type: 'category',
         label: 'C1主机的介绍与使用',
         items: [
-          'zeus-c1/C1 ubuntu固件',
+          'zeus-c1/C1ubuntu固件',
           'zeus-c1/Zeus C1 WEB插件给安卓指定VPC教程',
         ],
       },  
@@ -88,6 +88,7 @@ const sidebars: SidebarsConfig = {
           'zeus-q/Q1主机介绍',
           'zeus-q/Zeus Q1 主机固件',
           'zeus-q/Q1 ubuntu固件',
+          'zeus-q/Q1ubuntu刷机教程',
           'zeus-q/安装指南',
         ],
       },
