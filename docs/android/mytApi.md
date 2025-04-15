@@ -39,6 +39,8 @@ slug: /android/mytapi
 31. [上传Google证书](#31-上传Google证书)
 32. [更新指纹信息](#32-更新指纹信息)
 33. [执行ADB命令](#33-执行ADB命令)
+34. [导出app信息](#34-导出app信息)
+35. [导入app信息](#35-导入app信息)
 
 ## 接口详情
 
@@ -70,6 +72,7 @@ GET http://192.168.30.2:10008/modifydev?cmd=10&pkg=com.example.app&root=true
 **返回示例**:
 
 ```json
+成功:
 {
     "code": 200,
     "msg": "ok"
@@ -77,10 +80,13 @@ GET http://192.168.30.2:10008/modifydev?cmd=10&pkg=com.example.app&root=true
 {   "code":201,
     "error":"错误原因"
 }
-
-
-失败:{"code":201,"error":"错误原因"}
+失败:
+{
+    "code":201,
+    "error":"错误原因"
+}
 ```
+
 
 ### 2. 导出设备信息
 
@@ -802,23 +808,18 @@ http://192.168.30.2:10008/query=id
 
 **请求参数**:
 
-| 参数名  | 必选 | 类型   | 说明                               |
-| ------- | ---- | ------ | ---------------------------------- |
-| cmd     | 是   | int    | 固定值：11                         |
-| lang    | 是   | string | 语言代码(如：en_US, zh_CN, ja_JP)  |
-| user_ip | 否   | string | 用户IP，用于确定地理位置相关的设置 |
+| 参数名   | 必选 | 类型   | 说明                                                         |
+| -------- | ---- | ------ | ------------------------------------------------------------ |
+| cmd      | 是   | int    | 固定值：11                                                   |
+| language | 是   | string | 语言代码(zh 中文/en 英语/fr 法语/th 泰国/vi 越南/ja 日本/ko 韩国/lo 老挝/in 印尼 |
+| )        |      |        |                                                              |
+| user_ip  | 否   | string | 用户IP，用于确定地理位置相关的设置                           |
 
 **请求示例**:
 
 ```
 # 设置为英语（美国）
-GET http://192.168.30.2:10008/modifydev?cmd=11&lang=en_US
-
-# 设置为中文（中国）
-GET http://192.168.30.2:10008/modifydev?cmd=11&lang=zh_CN
-
-# 设置为日语（日本），并指定用户IP
-GET http://192.168.30.2:10008/modifydev?cmd=11&lang=ja_JP&user_ip=1.2.3.4
+GET http://192.168.30.2:10008/modifydev?cmd=11&language=th
 ```
 
 **返回示例**:
@@ -1823,5 +1824,106 @@ GET http://192.168.30.2:10008/modifydev?cmd=6&cmdline=emulator-5554 device
 {
     "code":202,
     "reason":"错误原因"
+}
+```
+
+### 34. 导出app信息
+
+
+**接口说明**: 导出app信息
+
+**请求 URL**: `http://{ip}:{port}/backrestore`
+
+**请求方式**: POST
+
+**请求参数**:
+
+| 参数名 | 必选 | 类型 | 说明         |
+| ------ | ---- | ---- | ------------ |
+| cmd    | 是   | str  | backup       |
+| pkg    | 是   | str  | 包名         |
+| saveto | 是   | str  | 导出文件路径 |
+
+**请求示例**:
+
+```
+# 导出导出app信息
+POST http://192.168.30.2:10020/backrestore
+请求体参数示例
+{
+    'cmd': 'backup',
+    'pkg': 'com.ss.android.ugc.aweme',
+    'saveto': '/sdcard/test.tar.gz'
+}
+python请求示例
+data = {
+    'cmd': 'backup',
+    'pkg': pkg,
+    'saveto': path
+}
+response = requests.post(f'http://{ip}:{port}/backrestore', data=data)
+```
+
+**返回示例**:
+
+```json
+成功:
+{
+    "status": "success",
+    "message": "Backup completed successfully"
+}
+失败:
+{
+    "status": "failed",
+    "message": "失败原因"
+}
+```
+
+### 35. 导入app信息
+
+
+**接口说明**: 导入app信息
+
+**请求 URL**: `http://{ip}:{port}/backrestore`
+
+**请求方式**: POST
+
+**请求参数**:
+
+| 参数名     | 必选 | 类型 | 说明         |
+| ---------- | ---- | ---- | ------------ |
+| cmd        | 是   | str  | recovery     |
+| backuppath | 是   | str  | 导入文件路径 |
+
+**请求示例**:
+
+```
+# 导出导出app信息
+POST http://192.168.30.2:10020/backrestore
+请求体参数示例
+{
+    'cmd': 'recovery',
+    'backuppath': '/sdcard/test.tar.gz'
+}
+python请求示例
+data = {
+    'cmd': 'recovery',
+    'backuppath': path
+}
+response = requests.post(f'http://{ip}:{port}/backrestore', data=data) 
+```
+
+**返回示例**:
+
+```json
+成功:
+{
+    "status": "success",
+    "message": "Recovery completed successfully"
+}
+失败:
+{
+    "status": "failed",
+    "message": "失败原因"
 }
 ```
