@@ -1,7 +1,3 @@
----
-slug: /android/mytapi
----
-
 # MytOS API 接口文档
 
 ## 目录
@@ -18,7 +14,7 @@ slug: /android/mytapi
 10. [异步随机设备信息](#10-异步随机设备信息)
 11. [设置语言](#11-设置语言)
 12. [设置语言和国家](#12-设置语言和国家)
-13. [设置地理位置](#13-设置地理位置)
+13. [设置经纬度](#13-设置经纬度)
 14. [设置音频资源](#14-设置音频资源)
 15. [设置自定义设备信息](#15-设置自定义设备信息)
 16. [获取剪贴板内容](#16-获取剪贴板内容)
@@ -39,7 +35,8 @@ slug: /android/mytapi
 31. [上传Google证书](#31-上传Google证书)
 32. [更新指纹信息](#32-更新指纹信息)
 33. [执行ADB命令](#33-执行ADB命令)
-
+34. [导出app信息](#34-导出app信息)
+35. [导入app信息](#35-导入app信息)
 ## 接口详情
 
 **ip**: 为安卓手机实例对应的安卓api ip
@@ -55,21 +52,20 @@ slug: /android/mytapi
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型    | 说明             |
-| ------ | ---- | ------- | ---------------- |
-| cmd    | 是   | int     | 固定值：10       |
-| pkg    | 是   | string  | 应用包名         |
-| root   | 是   | boolean | 是否启用root权限 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：10 |
+| pkg | 是 | string | 应用包名 |
+| root | 是 | boolean | 是否启用root权限 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=10&pkg=com.example.app&root=true
 ```
 
 **返回示例**:
-
 ```json
+成功:
 {
     "code": 200,
     "msg": "ok"
@@ -77,10 +73,13 @@ GET http://192.168.30.2:10008/modifydev?cmd=10&pkg=com.example.app&root=true
 {   "code":201,
     "error":"错误原因"
 }
-
-
-失败:{"code":201,"error":"错误原因"}
+失败:
+{
+    "code":201,
+    "error":"错误原因"
+}
 ```
+
 
 ### 2. 导出设备信息
 
@@ -92,18 +91,16 @@ GET http://192.168.30.2:10008/modifydev?cmd=10&pkg=com.example.app&root=true
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型 | 说明      |
-| ------ | ---- | ---- | --------- |
-| cmd    | 是   | int  | 固定值：8 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：8 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=8
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -126,13 +123,12 @@ GET http://192.168.30.2:10008/modifydev?cmd=8
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型   | 说明                  |
-| ------ | ---- | ------ | --------------------- |
-| cmd    | 是   | int    | 固定值：9             |
-| data   | 是   | string | 设备信息，需要URL编码 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：9 |
+| data | 是 | string | 设备信息，需要URL编码 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=9&data=eyJkZXZpY2VfaWQiOiJhYmMxMjMifQ%3D%3D
 
@@ -146,7 +142,6 @@ response = urllib.request.urlopen(url, timeout= 20)
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -174,26 +169,23 @@ response = urllib.request.urlopen(url, timeout= 20)
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型   | 说明                                   |
-| ------ | ---- | ------ | -------------------------------------- |
-| cmd    | 是   | int    | 固定值：3                              |
-| data   | 是   | string | Base64 URL安全编码的应用信息JSON字符串 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：3 |
+| data | 是 | string | Base64 URL安全编码的应用信息JSON字符串 |
 
 **data参数格式**:
-
 ```json
 '["com.example.app1", "com.example.app1"]'
 ```
 
 **返回参数**:
-
-| 参数名 | 类型   | 说明             |
-| ------ | ------ | ---------------- |
-| code   | int    | 状态码(200:成功) |
-| msg    | string | 返回消息         |
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| code | int | 状态码(200:成功) |
+| msg | string | 返回消息 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=3&data=WyJjb20uYW5kcm9pZC5ibHVldG9vdGgiXQ==
 python请求示例
@@ -205,7 +197,6 @@ response = urllib.request.urlopen(url)
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -220,14 +211,12 @@ response = urllib.request.urlopen(url)
 ```
 
 **错误码**:
-
-| 错误码 | 说明     |
-| ------ | -------- |
-| 200    | 成功     |
-| 其他   | 隐藏失败 |
+| 错误码 | 说明 |
+|--------|------|
+| 200 | 成功 |
+| 其他 | 隐藏失败 |
 
 **注意事项**:
-
 1. 应用包名必须正确,比如传入的app列表是'["com.android.bluetooth"]'进行编码后传就是示例的WyJjb20uYW5kcm9pZC5ibHVldG9vdGgiXQ==
 2. JSON字符串需要先进行Base64编码，然后进行URL安全编码
 
@@ -241,26 +230,23 @@ response = urllib.request.urlopen(url)
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型 | 说明      |
-| ------ | ---- | ---- | --------- |
-| cmd    | 是   | int  | 固定值：5 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：5 |
 
 **返回参数**:
-
-| 参数名 | 类型   | 说明             |
-| ------ | ------ | ---------------- |
-| code   | int    | 状态码(200:成功) |
-| addr   | string | 视频流地址       |
-| type   | int    | 视频流类型       |
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| code | int | 状态码(200:成功) |
+| addr | string | 视频流地址 |
+| type | int | 视频流类型 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=5
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -272,11 +258,10 @@ GET http://192.168.30.2:10008/modifydev?cmd=5
 ```
 
 **错误码**:
-
-| 错误码 | 说明     |
-| ------ | -------- |
-| 200    | 成功     |
-| 其他   | 获取失败 |
+| 错误码 | 说明 |
+|--------|------|
+| 200 | 成功 |
+| 其他 | 获取失败 |
 
 ### 6. 设置摄像头视频流
 
@@ -288,27 +273,24 @@ GET http://192.168.30.2:10008/modifydev?cmd=5
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型   | 说明                          |
-| ------ | ---- | ------ | ----------------------------- |
-| cmd    | 是   | int    | 固定值：4                     |
-| type   | 是   | string | 视频流类型 video webrtc image |
-| path   | 是   | string | 视频流地址                    |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：4 |
+| type | 是 | string | 视频流类型 video webrtc image |
+| path | 是 | string | 视频流地址 |
 
 **返回参数**:
-
-| 参数名 | 类型   | 说明             |
-| ------ | ------ | ---------------- |
-| code   | int    | 状态码(200:成功) |
-| msg    | string | 返回消息         |
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| code | int | 状态码(200:成功) |
+| msg | string | 返回消息 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=4&type=video&path=rtmp://server/live
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -331,29 +313,26 @@ GET http://192.168.30.2:10008/modifydev?cmd=4&type=video&path=rtmp://server/live
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型   | 说明                     |
-| ------ | ---- | ------ | ------------------------ |
-| list   | 是   | string | 要获取文件列表的目录路径 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| list | 是 | string | 要获取文件列表的目录路径 |
 
 **返回参数**:
-
-| 参数名         | 类型    | 说明                           |
-| -------------- | ------- | ------------------------------ |
-| code           | int     | 状态码                         |
-| files          | array   | 文件列表数组                   |
-| files[].file   | string  | 文件完整路径                   |
-| files[].flag   | boolean | 是否为文件夹(true:是/false:否) |
-| files[].length | int     | 文件大小(字节)                 |
-| files[].name   | string  | 文件名称                       |
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| code | int | 状态码 |
+| files | array | 文件列表数组 |
+| files[].file | string | 文件完整路径 |
+| files[].flag | boolean | 是否为文件夹(true:是/false:否) |
+| files[].length | int | 文件大小(字节) |
+| files[].name | string | 文件名称 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/files?list=/sdcard
 ```
 
 **返回示例**:
-
 ```json
 {
     "code": 200,
@@ -375,14 +354,12 @@ GET http://192.168.30.2:10008/files?list=/sdcard
 ```
 
 **错误码**:
-
-| 错误码 | 说明     |
-| ------ | -------- |
-| 200    | 成功     |
-| 其他   | 获取失败 |
+| 错误码 | 说明 |
+|--------|------|
+| 200 | 成功 |
+| 其他 | 获取失败 |
 
 **注意事项**:
-
 1. 该接口可用于获取Android实例中的文件列表
 2. 返回的文件大小对于文件夹固定为4096字节
 3. 建议使用绝对路径访问文件，以避免路径解析错误
@@ -397,20 +374,18 @@ GET http://192.168.30.2:10008/files?list=/sdcard
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型   | 说明             |
-| ------ | ---- | ------ | ---------------- |
-| path   | 是   | string | 要下载的文件路径 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| path | 是 | string | 要下载的文件路径 |
 
 
 **返回参数**:
-
-| 参数名 | 类型   | 说明     |
-| ------ | ------ | -------- |
-| code   | int    | 状态码   |
-| msg    | string | 返回消息 |
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| code | int | 状态码 |
+| msg | string | 返回消息 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/download?path=/data/prop.txt
 ```
@@ -419,14 +394,12 @@ GET http://192.168.30.2:10008/download?path=/data/prop.txt
 返回文件二进制数据
 
 **错误码**:
-
 | 错误码 | 说明 |
-| ------ | ---- |
-| 200    | 成功 |
+|--------|------|
+| 200 | 成功 |
 
 
 **注意事项**:
-
 1. 文件下载采用流式传输，支持大文件下载
 2. 下载过程中会显示下载进度
 3. 下载成功后会自动保存到指定的本地路径
@@ -434,13 +407,11 @@ GET http://192.168.30.2:10008/download?path=/data/prop.txt
 5. 建议使用绝对路径访问文件，以避免路径解析错误
 
 ### 9. 随机设备信息
-
 ### 10. 异步随机设备信息
 
 **接口说明**: 随机更换设备信息，支持同步和异步两种方式
 
 **请求 URL**: 
-
 - 同步方式: `http://{ip}:{port}/modifydev?cmd=2`
 - 异步方式: `http://{ip}:{port}/modifydev?cmd=2&isasync=true`
 
@@ -448,18 +419,17 @@ GET http://192.168.30.2:10008/download?path=/data/prop.txt
 
 **请求参数**:
 
-| 参数名           | 必选 | 类型    | 说明                                                         |
-| ---------------- | ---- | ------- | ------------------------------------------------------------ |
-| cmd              | 是   | int     | 固定值2，表示随机设备信息                                    |
-| modifymac        | 否   | boolean | 修改mac地址                                                  |
-| random_abroad    | 否   | boolean | 默认为false  随机海外机型                                    |
-| userip           | 否   | string  | 使用给定的ip进行区域匹配随机信息                             |
-| isasync          | 否   | boolean | 使用异步的方式进行请求 使用该参数后 会立刻返回结果 并给一个唯一ID作为查询请求的参数 |
-| isSpecifiedModel | 否   | boolean | 表示指定机型随机                                             |
-| modelId          | 否   | int     | 机型参数列表  只有当isSpecifiedModel=true 时生效             |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值2，表示随机设备信息 |
+| modifymac |否| boolean |修改mac地址|
+|random_abroad| 否 | boolean | 默认为false  随机海外机型|
+|userip|否|string|使用给定的ip进行区域匹配随机信息|
+|isasync|否|boolean|使用异步的方式进行请求 使用该参数后 会立刻返回结果 并给一个唯一ID作为查询请求的参数
+|isSpecifiedModel|否|boolean|表示指定机型随机
+|modelId|否|int|机型参数列表  只有当isSpecifiedModel=true 时生效
 
 //机型字典表
-
 ```
 {
     "samsung": {
@@ -721,11 +691,10 @@ GET http://192.168.30.2:10008/download?path=/data/prop.txt
 ```
 
 **返回参数**:
-
-| 参数名 | 类型   | 说明     |
-| ------ | ------ | -------- |
-| code   | int    | 状态码   |
-| msg    | string | 返回消息 |
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| code | int | 状态码 |
+| msg | string | 返回消息 |
 
 **请求示例**:
 
@@ -737,7 +706,6 @@ GET http://192.168.30.2:10008/modifydev?cmd=2&isSpecifiedModel=true&modelId=xiao
 
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -763,22 +731,18 @@ GET http://192.168.30.2:10008/modifydev?cmd=2&isSpecifiedModel=true&modelId=xiao
 ```
 
 **错误码**:
-
 | 错误码 | 说明 |
-| ------ | ---- |
-| 200    | 成功 |
+|--------|------|
+| 200 | 成功 |
 
 **注意事项**:
 异步请求返回 请求ID
-
 ```
 {"code":200,"msg":"185b66ab-1031-4c68-8423-345f8f013927"}
 ```
-
 然后可以每隔1s  在去查询改任务是否执行成功  由于这里会重置网卡 所以在请求时一定要设置超时处理
 //查询异步请求的任务结果
 modifydev?cmd=2&query=185b66ab-1031-4c68-8423-345f8f013927
-
 ```
 //返回成功
 {"code":200,"msg":"OK"} 
@@ -791,7 +755,6 @@ modifydev?cmd=2&query=185b66ab-1031-4c68-8423-345f8f013927
 http://192.168.30.2:10008/query=id
 {"code": 200,"msg": "2"}
 ```
-
 ### 11. 设置语言
 
 **接口说明**: 设置设备语言，同时会自动更新相关的区域设置和系统环境
@@ -802,27 +765,19 @@ http://192.168.30.2:10008/query=id
 
 **请求参数**:
 
-| 参数名  | 必选 | 类型   | 说明                               |
-| ------- | ---- | ------ | ---------------------------------- |
-| cmd     | 是   | int    | 固定值：11                         |
-| lang    | 是   | string | 语言代码(如：en_US, zh_CN, ja_JP)  |
-| user_ip | 否   | string | 用户IP，用于确定地理位置相关的设置 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：11 |
+| language | 是 | string | 语言代码(zh 中文/en 英语/fr 法语/th 泰国/vi 越南/ja 日本/ko 韩国/lo 老挝/in 印尼) |
+| user_ip | 否 | string | 用户IP，用于确定地理位置相关的设置 |
 
 **请求示例**:
-
 ```
 # 设置为英语（美国）
-GET http://192.168.30.2:10008/modifydev?cmd=11&lang=en_US
-
-# 设置为中文（中国）
-GET http://192.168.30.2:10008/modifydev?cmd=11&lang=zh_CN
-
-# 设置为日语（日本），并指定用户IP
-GET http://192.168.30.2:10008/modifydev?cmd=11&lang=ja_JP&user_ip=1.2.3.4
+GET http://192.168.30.2:10008/modifydev?cmd=11&language=th
 ```
 
 **返回示例**:
-
 ```json、
 成功
 {
@@ -841,13 +796,11 @@ GET http://192.168.30.2:10008/modifydev?cmd=11&lang=ja_JP&user_ip=1.2.3.4
 ```
 
 **错误码**:
-
 | 错误码 | 说明 |
-| ------ | ---- |
-| 200    | 成功 |
+|--------|------|
+| 200 | 成功 |
 
 **注意事项**:
-
 1. 语言设置会影响系统的显示语言、键盘输入法、时间格式等
 2. 设置语言后需要等待几秒钟才能完全生效
 3. 某些应用可能需要重启才能应用新的语言设置
@@ -865,20 +818,27 @@ GET http://192.168.30.2:10008/modifydev?cmd=11&lang=ja_JP&user_ip=1.2.3.4
 
 **请求参数**:
 
-| 参数名   | 必选 | 类型   | 说明       |
-| -------- | ---- | ------ | ---------- |
-| cmd      | 是   | int    | 固定值：13 |
-| language | 是   | string | 语言代码   |
-| country  | 是   | string | 国家代码   |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：13 |
+| language | 是 | string | 语言代码 |
+| country | 是 | string | 国家代码 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=13&language=zh_CN&country=US
+
+常见的国家和语言 字典表   国家=>语言
+'GR'=>'el','NL'=>'nl','BE'=>'de','FR'=>'fr','MC'=>'fr','AD'=>'ca','ES'=>'eu','HU'=>'hu','BA'=>'sr','HR'=>'hr','RS'=>'sr','IT'=>'fur','RO'=>'ro','CH'=>'rm',
+'CZ'=>'cs','SK'=>'sk','AT'=>'en','GB'=>'cy','DK'=>'en','SE'=>'se','NO'=>'nn','FI'=>'fi','LT'=>'lt','LV'=>'lv','EE'=>'et','RU'=>'os', 'UA'=>'uk','BY'=>'be','MD'=>'ru','PL'=>'pl','DE'=>'hsb',
+'GI'=>'en','PT'=>'pt','LU'=>'lb','IE'=>'en','IS'=>'is','AL'=>'sq','MT'=>'en','CY'=>'en','GE'=>'os','AM'=>'hy','BG'=>'bg','TR'=>'tr','FO'=>'fo','GL'=>'da','SM'=>'it','SI'=>'en','MK'=>'mk','LI'=>'gsw','ME'=>'sr','CA'=>'en','PM'=>'fr','US'=>'en','US'=>'en','US'=>'en','US'=>'en','US'=>'en','US'=>'en','US'=>'en','PR'=>'en','VI'=>'en','MX'=>'es','JM'=>'en',
+'MQ'=>'fr','BB'=>'en','AG'=>'en','KY'=>'en','VG'=>'en','BM'=>'en','GD'=>'en','MS'=>'en','KN'=>'en','LC'=>'en','VC'=>'en','CW'=>'nl','AW'=>'nl','BS'=>'en','AI'=>'en','DM'=>'en','CU'=>'es','DO'=>'es','HT'=>'fr','TT'=>'en','TC'=>'en','AZ'=>'az','KZ'=>'kk','BT'=>'dz','IN'=>'hi','IN'=>'hi','IN'=>'hi','PK'=>'pa','AF'=>'uz','LK'=>'si','MM'=>'my','LB'=>'ar','JO'=>'ar','SY'=>'ar','IQ'=>'ar','KW'=>'ar','SA'=>'ar','YE'=>'ar','OM'=>'ar',
+'AE'=>'ar','PS'=>'ar','BH'=>'ar','QA'=>'ar','MN'=>'mn','NP'=>'ne','AE'=>'ar','AE'=>'ar','IR'=>'mzn','UZ'=>'uz','KG'=>'ky','JP'=>'ja','JP'=>'ja','KR'=>'ko','VN'=>'vi','HK'=>'zh','MO'=>'en','KH'=>'km','LA'=>'lo',
+'CN'=>'zh','CN'=>'zh','TW'=>'zh','KP'=>'ko','BD'=>'bn','MY'=>'en','AU'=>'en','ID'=>'in','TL'=>'pt','PH'=>'en','TH'=>'th','SG'=>'en','BN'=>'ms','NZ'=>'en','MP'=>'en','GU'=>'en','NR'=>'en','PG'=>'en','TO'=>'en','SB'=>'en','VU'=>'fr','FJ'=>'en','WF'=>'fr','AS'=>'en','KI'=>'en','NC'=>'fr','PF'=>'fr','CK'=>'en','WS'=>'en','FM'=>'en','MH'=>'en','PW'=>'en','NU'=>'en','EG'=>'ar','DZ'=>'kab','MA'=>'fr','TN'=>'fr','LY'=>'ar','GM'=>'en','SN'=>'ff','MR'=>'ar','ML'=>'khq','GN'=>'ff','CI'=>'fr','BF'=>'fr','NE'=>'dje','TG'=>'fr','BJ'=>'fr','MU'=>'fr','LR'=>'vai','SL'=>'en','GH'=>'en','NG'=>'ha','TD'=>'ar','CF'=>'sg','CM'=>'kkj','CV'=>'kea','ST'=>'pt','GQ'=>'es','GA'=>'fr','CG'=>'ln','CD'=>'fr','AO'=>'ln','GW'=>'pt','SC'=>'en','SD'=>'en','RW'=>'en','ET'=>'am','SO'=>'ar','DJ'=>'so','KE'=>'guz','TZ'=>'kde','UG'=>'lg','BI'=>'fr','MZ'=>'seh','ZM'=>'bem','MG'=>'en','RE'=>'fr','SZ'=>'en','KM'=>'ar','ZA'=>'af','ER'=>'en','BZ'=>'en','GT'=>'es','SV'=>'es','HN'=>'es','NI'=>'es','CR'=>'es','PA'=>'es','PE'=>'qu','AR'=>'es','BR'=>'pt','CL'=>'es','CO'=>'es','VE'=>'es','BO'=>'qu','GY'=>'en','EC'=>'es','GF'=>'fr','PY'=>'es','SR'=>'nl','UY'=>'es','FK'=>'en'
+
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -906,20 +866,18 @@ GET http://192.168.30.2:10008/modifydev?cmd=13&language=zh_CN&country=US
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型  | 说明       |
-| ------ | ---- | ----- | ---------- |
-| cmd    | 是   | int   | 固定值：12 |
-| lat    | 是   | float | 纬度       |
-| lng    | 是   | float | 经度       |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：12 |
+| lat | 是 | float | 纬度 |
+| lng | 是 | float | 经度 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=12&lat=39.9042&lng=116.4074
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -947,21 +905,19 @@ GET http://192.168.30.2:10008/modifydev?cmd=12&lat=39.9042&lng=116.4074
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型   | 说明                                  |
-| ------ | ---- | ------ | ------------------------------------- |
-| cmd    | 是   | int    | 固定值：14                            |
-| type   | 是   | string | 音频类型 （media/webrtc/rtmp/camera） |
-| source | 是   | string | 音频资源路径                          |
-| state  | 是   | string | 动作(play/stop)                       |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：14 |
+| type | 是 | string | 音频类型 （media/webrtc/rtmp/camera）|
+| source | 是 | string | 音频资源路径 |
+| state | 是 | string | 动作(play/stop) |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=14&type=rtmp&source=/sdcard/music.mp3&state=play
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -984,13 +940,12 @@ GET http://192.168.30.2:10008/modifydev?cmd=14&type=rtmp&source=/sdcard/music.mp
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型 | 说明       |
-| ------ | ---- | ---- | ---------- |
-| cmd    | 是   | int  | 固定值：15 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：15 |
 
 **post 内容**
 **请求示例**:
-
 ```
 POST http://192.168.30.2:10008/modifydev?cmd=15
 custom='{
@@ -1015,9 +970,7 @@ x-www-form-urlencoded
 传参带上三个参数
 cmd custom dev_data
 ```
-
 python请求示例:
-
 ```
 s_arr = {}
 s_arr['dev_data'] = dev_data
@@ -1031,6 +984,7 @@ url =  "http://192.168.30.2:10008/modifydev?cmd=15&{encoded_text}"
 百度网盘下载地址: https://pan.baidu.com/s/1TQLQOuJEXLiQRajEX4huyg?pwd=lqs8 流程: 1 在要提取的真机上安装工具 获取数据下载地址 2 将真机数据通过该接口 传入指定的云机
 
 ```
+
 **返回示例**:
 
 json
@@ -1055,19 +1009,17 @@ json
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型   | 说明 |
-| ------ | ---- | ------ | ---- |
-| ip     | 是   | string | ip   |
-| port   | 是   | string | port |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| ip | 是 | string | ip |
+| port | 是 | string | port |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/clipboard
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -1098,13 +1050,12 @@ GET http://192.168.30.2:10008/clipboard
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型   | 说明                    |
-| ------ | ---- | ------ | ----------------------- |
-| cmd    | 是   | int    | 固定值：2               |
-| text   | 是   | string | 要设置的文本内容url编码 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：2 |
+| text | 是 | string | 要设置的文本内容url编码 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/clipboard?cmd=2&text=text
 python请求示例 url编码方式python举例
@@ -1116,7 +1067,6 @@ response = urllib.request.urlopen(url, timeout = 15)
 ```
 
 **返回示例**:
-
 ```json
 成功:
 {
@@ -1145,24 +1095,21 @@ response = urllib.request.urlopen(url, timeout = 15)
 **请求参数**: 无
 
 **返回参数**:
-
-| 参数名          | 类型   | 说明         |
-| --------------- | ------ | ------------ |
-| code            | int    | 状态码       |
-| data            | object | 返回数据对象 |
-| data.status     | string | 查询结果     |
-| data.statusText | string | 提示信息     |
-| data.addr       | string | 代理地址     |
-| data.type       | int    | 代理类型     |
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| code | int | 状态码 |
+| data | object | 返回数据对象 |
+| data.status | string | 查询结果 |
+| data.statusText | string | 提示信息 |
+| data.addr | string | 代理地址 |
+| data.type | int | 代理类型 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/proxy
 ```
 
 **返回示例**:
-
 ```json
 {
     "code": 200,
@@ -1185,31 +1132,27 @@ GET http://192.168.30.2:10008/proxy
 **请求方式**: GET
 
 **请求参数**:
-
-| 参数名 | 必选 | 类型   | 说明                               |
-| ------ | ---- | ------ | ---------------------------------- |
-| cmd    | 是   | int    | 固定值：2                          |
-| ip     | 是   | string | s5服务器地址                       |
-| port   | 是   | int    | s5服务器端口                       |
-| usr    | 是   | string | s5用户名                           |
-| pwd    | 是   | string | s5密码                             |
-| type   | 否   | int    | s5域名模式(0:不启用 1:启用 2:默认) |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：2 |
+| ip | 是 | string | s5服务器地址 |
+| port | 是 | int | s5服务器端口 |
+| usr | 是 | string | s5用户名 |
+| pwd | 是 | string | s5密码 |
+| type | 否 | int | s5域名模式(0:不启用 1:启用 2:默认) |
 
 **返回参数**:
-
-| 参数名 | 类型   | 说明     |
-| ------ | ------ | -------- |
-| code   | int    | 状态码   |
-| msg    | string | 返回消息 |
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| code | int | 状态码 |
+| msg | string | 返回消息 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/proxy?cmd=2&ip=192.168.30.2&port=10008&usr=user&pwd=password&type=1
 ```
 
 **返回示例**:
-
 ```json
 {
     "code": 200,
@@ -1226,26 +1169,22 @@ GET http://192.168.30.2:10008/proxy?cmd=2&ip=192.168.30.2&port=10008&usr=user&pw
 **请求方式**: GET
 
 **请求参数**:
-
-| 参数名 | 必选 | 类型 | 说明      |
-| ------ | ---- | ---- | --------- |
-| cmd    | 是   | int  | 固定值：3 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：3 |
 
 **返回参数**:
-
-| 参数名 | 类型   | 说明     |
-| ------ | ------ | -------- |
-| code   | int    | 状态码   |
-| msg    | string | 返回消息 |
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| code | int | 状态码 |
+| msg | string | 返回消息 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/proxy?cmd=3
 ```
 
 **返回示例**:
-
 ```json
 {
     "code": 200,
@@ -1262,13 +1201,11 @@ GET http://192.168.30.2:10008/proxy?cmd=3
 **请求方式**: POST
 
 **请求参数**:
-
-| 参数名 | 必选 | 类型 | 说明      |
-| ------ | ---- | ---- | --------- |
-| cmd    | 是   | int  | 固定值：4 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：4 |
 
 **请求体**: 
-
 ```
 body
 [
@@ -1278,14 +1215,12 @@ body
 ```
 
 **返回参数**:
-
-| 参数名 | 类型   | 说明     |
-| ------ | ------ | -------- |
-| code   | int    | 状态码   |
-| msg    | string | 返回消息 |
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| code | int | 状态码 |
+| msg | string | 返回消息 |
 
 **请求示例**:
-
 ```
 POST http://192.168.30.2:10008/proxy?cmd=4
 [
@@ -1295,7 +1230,6 @@ POST http://192.168.30.2:10008/proxy?cmd=4
 ```
 
 **返回示例**:
-
 ```json
 {
     "code": 200,
@@ -1304,14 +1238,13 @@ POST http://192.168.30.2:10008/proxy?cmd=4
 ```
 
 **注意事项**:
-
 1. S5代理相关参数也可以在创建和更新安卓容器时进行设置，相关参数如下：
    - s5ip: string - S5服务器地址
    - s5port: int - S5服务器端口
    - s5user: string - S5用户名
    - s5pwd: string - S5密码
    - dnstcp_mode: int - 是否使用dnstcp模式(0:不使用 1:使用)
-
+ 
 2. 在使用S5代理时，建议先检查代理服务器的可用性
 3. 域名过滤规则的变更会立即生效
 4. 如果需要临时禁用S5代理，可以使用停止S5代理接口
@@ -1327,19 +1260,17 @@ POST http://192.168.30.2:10008/proxy?cmd=4
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型  | 说明                 |
-| ------ | ---- | ----- | -------------------- |
-| cmd    | 是   | int   | 固定值：17           |
-| scale  | 是   | float | 灵敏度系数(0.1-10.0) |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：17 |
+| scale | 是 | float | 灵敏度系数(0.1-10.0) |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=17&scale=1.5
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -1358,19 +1289,17 @@ GET http://192.168.30.2:10008/modifydev?cmd=17&scale=1.5
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型    | 说明                       |
-| ------ | ---- | ------- | -------------------------- |
-| cmd    | 是   | int     | 固定值：17                 |
-| shake  | 是   | boolean | 是否启用摇一摇(true/false) |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：17 |
+| shake | 是 | boolean | 是否启用摇一摇(true/false) |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=17&shake=true
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -1398,19 +1327,17 @@ GET http://192.168.30.2:10008/modifydev?cmd=17&shake=true
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型   | 说明       |
-| ------ | ---- | ------ | ---------- |
-| cmd    | 是   | int    | 固定值：18 |
-| pkg    | 是   | string | 应用包名   |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：18 |
+| pkg | 是 | string | 应用包名 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=18&pkg=com.example.app
 ```
 
 **返回示例**:
-
 ```json
 成功:
 {
@@ -1438,21 +1365,20 @@ GET http://192.168.30.2:10008/modifydev?cmd=18&pkg=com.example.app
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型    | 说明                   |
-| ------ | ---- | ------- | ---------------------- |
-| cmd    | 是   | int     | 固定值：19             |
-| pkg    | 是   | string  | 应用包名               |
-| filter | 是   | boolean | 是否启用过滤true/false |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：19 |
+| pkg | 是 | string | 应用包名 |
+| filter | 是 | boolean | 是否启用过滤true/false |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=19&pkg=com.android.mtp&filter=true
 ```
 
 **返回示例**:
-
 ```json
+
 成功:
 {
     "code":200,
@@ -1480,13 +1406,12 @@ GET http://192.168.30.2:10008/modifydev?cmd=19&pkg=com.android.mtp&filter=true
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型   | 说明                                |
-| ------ | ---- | ------ | ----------------------------------- |
-| cmd    | 是   | int    | 固定值：21                          |
-| data   | 是   | string | 设备信息JSON字符串传参前进行url编码 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：21 |
+| data | 是 | string | 设备信息JSON字符串传参前进行url编码 |
 
 **data参数格式**:
-
 ```json
 [
     {
@@ -1499,7 +1424,6 @@ GET http://192.168.30.2:10008/modifydev?cmd=19&pkg=com.android.mtp&filter=true
 ```
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=21&data=%5B%7B%22id%22%3A0%2C%22name%22%3A%22PropRw%22%2C%22description%22%3A%22sim.imsi%22%2C%22value%22%3A%2212344567%22%7D%5D
 python请求示例
@@ -1511,7 +1435,6 @@ response = urllib.request.urlopen(url, timeout = 15)
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -1539,19 +1462,17 @@ response = urllib.request.urlopen(url, timeout = 15)
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型   | 说明       |
-| ------ | ---- | ------ | ---------- |
-| cmd    | 是   | int    | 固定值：20 |
-| imeid  | 是   | string | 输入法包名 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：20 |
+| imeid | 是 | string | 输入法包名 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=20&imeid=com.android.gmime/com.android.GmIme
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -1575,20 +1496,18 @@ GET http://192.168.30.2:10008/modifydev?cmd=20&imeid=com.android.gmime/com.andro
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型 | 说明                      |
-| ------ | ---- | ---- | ------------------------- |
-| cmd    | 是   | int  | 固定值：22                |
-| rot    | 是   | int  | 旋转角度(0/90/180/270)    |
-| face   | 否   | int  | 前后摄像头(0:后置/1:前置) |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：22 |
+| rot | 是 | int | 旋转角度(0/90/180/270) |
+| face | 否 | int | 前后摄像头(0:后置/1:前置) |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=22&rot=90&face=1
 ```
 
 **返回示例**:
-
 ```json
 成功:
 {
@@ -1617,14 +1536,13 @@ GET http://192.168.30.2:10008/modifydev?cmd=22&rot=90&face=1
 
 **请求参数**:
 
-| 参数名    | 必选 | 类型   | 说明         |
-| --------- | ---- | ------ | ------------ |
-| address   | 是   | string | 接收号码     |
-| body      | 是   | string | 短信内容     |
-| scaddress | 否   | string | 短信中心号码 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| address | 是 | string | 接收号码 |
+| body | 是 | string | 短信内容 |
+| scaddress | 否 | string | 短信中心号码 |
 
 **请求示例**:
-
 ```
 POST http://192.168.30.2:10008/sms
 请求头 
@@ -1638,7 +1556,6 @@ body = {
 ```
 
 **返回示例**:
-
 ```json
 成功:
 {
@@ -1666,18 +1583,16 @@ body = {
 
 **请求参数**:
 
-| 参数名  | 必选 | 类型   | 说明     |
-| ------- | ---- | ------ | -------- |
-| sethost | 是   | string | 加速域名 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| sethost | 是 | string | 加速域名 |
 
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?sethost=fig.moyunteng.net
 ```
 
 **返回示例**:
-
 ```json
 成功
 {
@@ -1700,12 +1615,11 @@ GET http://192.168.30.2:10008/modifydev?sethost=fig.moyunteng.net
 
 **请求参数**:
 
-| 参数名       | 必选 | 类型 | 说明             |
-| ------------ | ---- | ---- | ---------------- |
-| fileToUpload | 是   | file | 要上传的证书文件 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| fileToUpload | 是 | file | 要上传的证书文件 |
 
 **请求示例**:
-
 ```
 POST http://192.168.30.2:10008/uploadkeybox
 请求体 
@@ -1714,7 +1628,6 @@ form_data 上传文件
 ```
 
 **返回示例**:
-
 ```json
 导入完成permissionabc
 selinux123
@@ -1730,13 +1643,12 @@ selinux123
 
 **请求参数**:
 
-| 参数名 | 必选 | 类型   | 说明                           |
-| ------ | ---- | ------ | ------------------------------ |
-| cmd    | 是   | int    | 固定值：7                      |
-| data   | 是   | string | 设备指纹信息JSON字符串 url编码 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：7 |
+| data | 是 | string | 设备指纹信息JSON字符串 url编码 |
 
 **data参数格式**:
-
 ```json
 {
     "lac": "12345",
@@ -1757,9 +1669,7 @@ selinux123
     "gaid": "abc123def456"
 }
 ```
-
 **请求示例**:
-
 ```
 GET http://192.168.30.2:10008/modifydev?cmd=7&data=%7B%22lac%22%3A+%2212345%22%2C+%22cid%22%3A+%2267890%22%2C+%22lat%22%3A+%2239%22%7D
 python请求示例
@@ -1772,10 +1682,8 @@ url =  f"http://{ip}:{port}/modifydev?cmd=7&{query_string}"
 try:
 response = urllib.request.urlopen(url, timeout = 15)
 ```
-
 **注意data参数需要转化为json字符串然后url编码后的字符串**
 **返回示例**:
-
 ```json
 成功:
 {
@@ -1799,20 +1707,18 @@ response = urllib.request.urlopen(url, timeout = 15)
 
 **请求参数**:
 
-| 参数名  | 必选 | 类型   | 说明            |
-| ------- | ---- | ------ | --------------- |
-| cmd     | 是   | int    | 固定值：6       |
-| cmdline | 是   | string | 要执行的ADB命令 |
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | int | 固定值：6 |
+| cmdline | 是 | string | 要执行的ADB命令 |
 
 **请求示例**:
-
 ```
 # 获取设备属性
 GET http://192.168.30.2:10008/modifydev?cmd=6&cmdline=emulator-5554 device
 ```
 
 **返回示例**:
-
 ```json
 成功:
 {
@@ -1823,5 +1729,100 @@ GET http://192.168.30.2:10008/modifydev?cmd=6&cmdline=emulator-5554 device
 {
     "code":202,
     "reason":"错误原因"
+}
+```
+### 34. 导出app信息
+
+
+**接口说明**: 导出app信息
+
+**请求 URL**: `http://{ip}:{port}/backrestore`
+
+**请求方式**: POST
+
+**请求参数**:
+
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | str | backup |
+| pkg | 是 | str | 包名 |
+| saveto | 是 | str | 导出文件路径 |
+
+**请求示例**:
+```
+# 导出导出app信息
+POST http://192.168.30.2:10020/backrestore
+请求体参数示例
+{
+    'cmd': 'backup',
+    'pkg': 'com.ss.android.ugc.aweme',
+    'saveto': '/sdcard/test.tar.gz'
+}
+python请求示例
+data = {
+    'cmd': 'backup',
+    'pkg': pkg,
+    'saveto': path
+}
+response = requests.post(f'http://{ip}:{port}/backrestore', data=data)
+```
+
+**返回示例**:
+```json
+成功:
+{
+    "status": "success",
+    "message": "Backup completed successfully"
+}
+失败:
+{
+    "status": "failed",
+    "message": "失败原因"
+}
+```
+### 35. 导入app信息
+
+
+**接口说明**: 导入app信息
+
+**请求 URL**: `http://{ip}:{port}/backrestore`
+
+**请求方式**: POST
+
+**请求参数**:
+
+| 参数名 | 必选 | 类型 | 说明 |
+|--------|------|------|------|
+| cmd | 是 | str | recovery |
+| backuppath | 是 | str | 导入文件路径 |
+
+**请求示例**:
+```
+# 导出导出app信息
+POST http://192.168.30.2:10020/backrestore
+请求体参数示例
+{
+    'cmd': 'recovery',
+    'backuppath': '/sdcard/test.tar.gz'
+}
+python请求示例
+data = {
+    'cmd': 'recovery',
+    'backuppath': path
+}
+response = requests.post(f'http://{ip}:{port}/backrestore', data=data) 
+```
+
+**返回示例**:
+```json
+成功:
+{
+    "status": "success",
+    "message": "Recovery completed successfully"
+}
+失败:
+{
+    "status": "failed",
+    "message": "失败原因"
 }
 ```
