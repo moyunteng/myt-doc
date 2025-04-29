@@ -106,6 +106,7 @@ const sidebars: SidebarsConfig = {
         items: [
           'p1/p1刷机教程',
           'p1/p1-usb刷机教程',
+          'p1/p1盒子长按maskrom无法进入刷机模式解决教程',
         ],
       },
       'zeus-q/修改静态ip',
