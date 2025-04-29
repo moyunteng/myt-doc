@@ -105,7 +105,7 @@ const sidebars: SidebarsConfig = {
         label: 'P1主机的介绍与使用',
         items: [
           'p1/p1刷机教程',
-          
+          'p1/p1-usb刷机教程',
         ],
       },
       'zeus-q/修改静态ip',
