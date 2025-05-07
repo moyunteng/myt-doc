@@ -826,7 +826,7 @@ GET http://192.168.30.2:10008/modifydev?cmd=11&language=th
 
 **请求示例**:
 ```
-GET http://192.168.30.2:10008/modifydev?cmd=13&language=zh_CN&country=US
+GET http://192.168.30.2:10008/modifydev?cmd=13&language=zh&country=US
 
 常见的国家和语言 字典表   国家=>语言
 'GR'=>'el','NL'=>'nl','BE'=>'de','FR'=>'fr','MC'=>'fr','AD'=>'ca','ES'=>'eu','HU'=>'hu','BA'=>'sr','HR'=>'hr','RS'=>'sr','IT'=>'fur','RO'=>'ro','CH'=>'rm',
@@ -1541,10 +1541,11 @@ GET http://192.168.30.2:10008/modifydev?cmd=22&rot=90&face=1
 | address | 是 | string | 接收号码 |
 | body | 是 | string | 短信内容 |
 | scaddress | 否 | string | 短信中心号码 |
+| cmd | 是 | int | 4 |
 
 **请求示例**:
 ```
-POST http://192.168.30.2:10008/sms
+POST http://192.168.30.2:10008/sms?cmd=4
 请求头 
 headers = {"Content-Type": "application/json"}
 请求体 
@@ -1553,6 +1554,14 @@ body = {
     "body": "content",
     "scaddress": "scaddress"
 }
+///////////////////////////////////////////
+curl -X POST "http://{ip}:{port}/sms?cmd=4" \
+-H "Content-Type: application/json" \
+-d '{
+    "address": "13800138000",
+    "body": "Hello, this is a test message.",
+    "scaddress": "+8613900000000"
+}'
 ```
 
 **返回示例**:
