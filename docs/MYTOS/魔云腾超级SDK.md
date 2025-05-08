@@ -3,11 +3,7 @@ slug: /MYTOS/supersdk
 ---
 # MYT SUPER SDK 正式发布了!
 
-**windows 版本 下载地址:** [点我下载](http://d.moyunteng.com/sdk/myt_sdk_v1.0.14.30.4.zip)(1.0.14.30.4)   
-
-**Ubuntu(x86) 版本 下载地址:**[点我下载](http://d.moyunteng.com/sdk/myt_sdk_ubuntu_v1.0.14.30.2.tar.gz)[(](http://d.moyunteng.com/sdk/myt_sdk_ubuntu_v1.0.14.30.1.tar.gz)1.0.14.30.2)
-
-**CentOS(x86) 版本 下载地址:** [下载地址](http://d.moyunteng.com/sdk/myt_sdk_centos7_v1.0.14.30.2.tar.gz)[(](http://d.moyunteng.com/sdk/myt_sdk_centos7_v1.0.14.29.tar.gz)1.0.14.30.2)
+[SDK下载地址](http://bbs.moyunteng.com/forum.php?mod=viewthread&tid=37&extra=page%3D1)
 
 **ARM 版本  直接在客户端 插件管理中安装ARM版本**  (1.0.14.30.2)
 

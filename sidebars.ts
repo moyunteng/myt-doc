@@ -19,6 +19,7 @@ const sidebars: SidebarsConfig = {
     'MYTOS/导入抓包证书教程',
     'android/[网络相关] 使用frp穿透工具实现魔云腾公网访问使用',
     'android/直播推流',
+    'android/如何使用魔云腾云机扫码',
     
   ],
   MYTOS开发教程:[

@@ -3,7 +3,7 @@ slug: /MYTOS/sdkdrdcazjc
 ---
 第一步：下载最新的超级SDK
 
-![image-20241216155211339](/img/sdk1.png)
+[SDK下载地址](http://bbs.moyunteng.com/forum.php?mod=viewthread&tid=37&extra=page%3D1)
 
 第二步：安装SDK并运行
 ![img](/img/sdk2.png)
