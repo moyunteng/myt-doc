@@ -53,7 +53,7 @@ const sidebars: SidebarsConfig = {
         'MYTOS/清理未使用的安卓镜像',
         'MYTOS/按需制定文件系统',
         'MYTOS/服务商限制访问的解决方案',
-          
+        'MYTOS/魔云腾磁盘克隆后分区扩展教程',
       ],
     },
     {
