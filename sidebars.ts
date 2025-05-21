@@ -54,6 +54,7 @@ const sidebars: SidebarsConfig = {
         'MYTOS/按需制定文件系统',
         'MYTOS/服务商限制访问的解决方案',
         'MYTOS/魔云腾磁盘克隆后分区扩展教程',
+        'MYTOS/将.tar格式的Docker镜像包上传到CNB公有云镜像仓库',
       ],
     },
     {
