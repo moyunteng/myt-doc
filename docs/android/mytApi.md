@@ -39,6 +39,7 @@
 35. [导入app信息](#35-导入app信息)
 36. [虚拟摄像头热启动](#36-虚拟摄像头热启动)
 37. [添加联系人](#37-添加联系人)
+38. [伪装应用](#38-伪装应用)
 ## 接口详情
 
 **ip**: 为安卓手机实例对应的安卓api ip
@@ -1982,7 +1983,7 @@ GET http://{ip}:{port}/camera?cmd=start
 
 **接口说明**: 添加联系人
 
-**请求 URL**: `http://ip:9082/modifydev?cmd=23 `
+**请求 URL**: `http://ip:port/modifydev?cmd=23 `
 
 **请求方式**: GET
 
@@ -2033,5 +2034,64 @@ response = urllib.request.urlopen(url, timeout = 15)
 }
 ```
 
+### 38. 伪装应用
+
+**接口说明**: 伪装应用
+
+**请求 URL**: `http://ip:port/modifydev?cmd=24 `
+
+**请求方式**: GET
+
+**请求参数**:
+
+| 参数名 | 必选 | 类型 | 说明   |
+| ------ | ---- | ---- | ---- |
+| cmd    | 是   | str  | 24   |
+| data   | 是   | str  | 请求时候需要url编码后的json字符串 |
+
+**请求示例**:
+
+```
+http://10.10.0.252:10011/modifydev?cmd=24&data=%5B%7B%27label%27%3A+%27%E6%B5%8B%E8%AF%951%27%2C+%27pkg%27%3A+%27com.ss.android.ugc.aweme%27%2C+%27versionCode%27%3A+%2715%27%2C+%27versionName%27%3A+%271.7.6%27%7D%5D
+```
+```
+data:
+[
+    {
+        "pkg":"con.test",
+        "label":"测试",
+        "versionCode":"13"
+        "versionName":"1.5.6"
+    },
+    {
+        "pkg":"con.test1",
+        "label":"测试1",
+        "versionCode":"15"
+        "versionName":"1.7.6"
+    }
+]
+python请求示例
+params = {
+    "data": data_list
+}
+query_string = urllib.parse.urlencode(params)
+url =  f"http://{ip}:{port}/modifydev?cmd=24&{query_string}"
+response = urllib.request.urlopen(url, timeout = 15)
+```
+**返回示例**:
+
+```json
+成功:
+{
+    "code": 200,
+    "msg": "ok"
+}
+失败:
+{
+    "code":202,
+    "reason":"错误原因"
+}
+```
+
 git st
-更新时间：2025.5.22
+更新时间：2025.5.23
