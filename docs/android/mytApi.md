@@ -2048,31 +2048,38 @@ response = urllib.request.urlopen(url, timeout = 15)
 | ------ | ---- | ---- | ---- |
 | cmd    | 是   | str  | 24   |
 | data   | 是   | str  | 请求时候需要url编码后的json字符串 |
+| data.pkg | 是   | str  | 包名 |
+| data.label | 是   | str  | 应用名称 |
+| data.versionCode | 是   | str  | 版本号 |
+| data.versionName | 是   | str  | 版本名称 |
+| data.flags | 是   | int  | 固定0 |
 
 **请求示例**:
 
 ```
-http://10.10.0.252:10011/modifydev?cmd=24&data=%5B%7B%27label%27%3A+%27%E6%B5%8B%E8%AF%951%27%2C+%27pkg%27%3A+%27com.ss.android.ugc.aweme%27%2C+%27versionCode%27%3A+%2715%27%2C+%27versionName%27%3A+%271.7.6%27%7D%5D
+http://10.10.0.252:10011/modifydev?cmd=24&data=%5B%7B%27flags%27%3A+0%2C+%27label%27%3A+%27%E6%B5%8B%E8%AF%951%27%2C+%27pkg%27%3A+%27con.test1%27%2C+%27versionCode%27%3A+%2715%27%2C+%27versionName%27%3A+%271.7.6%27%7D%2C+%7B%27flags%27%3A+0%2C+%27label%27%3A+%27%E6%B5%8B%E8%AF%952%27%2C+%27pkg%27%3A+%27con.test2%27%2C+%27versionCode%27%3A+%2717%27%2C+%27versionName%27%3A+%271.5.6%27%7D%5D
 ```
 ```
 data:
 [
     {
-        "pkg":"con.test",
-        "label":"测试",
-        "versionCode":"13"
-        "versionName":"1.5.6"
+            "pkg":"con.test",
+            "label":"测试",
+            "versionCode":"13"
+            "versionName":"1.5.6"
+            "flags":0
     },
     {
-        "pkg":"con.test1",
-        "label":"测试1",
-        "versionCode":"15"
-        "versionName":"1.7.6"
+            "pkg":"con.test1",
+            "label":"测试1",
+            "versionCode":"15"
+            "versionName":"1.7.6"
+            "flags":0
     }
 ]
 python请求示例
 params = {
-    "data": data_list
+    "data": data
 }
 query_string = urllib.parse.urlencode(params)
 url =  f"http://{ip}:{port}/modifydev?cmd=24&{query_string}"
